@@ -56,15 +56,48 @@
         <span class="ml-auto font-mono text-[11px] tracking-[0.05em]">~/juaini — zsh</span>
       </div>
       <div class="p-5 leading-[1.75]">
-        <div><span class="text-green">$</span> <span class="text-ink">whoami --verbose</span></div>
-        <div><span class="text-ink-mute">→ name:</span>       <span class="text-accent-soft">"Juaini"</span></div>
-        <div><span class="text-ink-mute">→ role:</span>       <span class="text-accent-soft">"Software Engineer"</span></div>
-        <div><span class="text-ink-mute">→ location:</span>   <span class="text-accent-soft">"Kalimantan Selatan, ID"</span></div>
-        <div><span class="text-ink-mute">→ years:</span>      <span class="text-green">3</span></div>
-        <div><span class="text-ink-mute">→ stack:</span>      [<span class="text-violet">Java</span>, <span class="text-violet">Spring</span>, <span class="text-violet">Node</span>, <span class="text-violet">React</span>]</div>
-        <div><span class="text-ink-mute">→ status:</span>     <span class="text-green">OPEN_TO_WORK</span> <span class="caret"></span></div>
+        <div>
+          <span class="text-green">$</span>
+          <span class="text-ink" id="terminal-cmd"></span><span class="caret" id="terminal-cursor"></span>
+        </div>
+        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ name:</span>       <span class="text-accent-soft">"Juaini"</span></div>
+        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ role:</span>       <span class="text-accent-soft">"Software Engineer"</span></div>
+        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ location:</span>   <span class="text-accent-soft">"Kalimantan Selatan, ID"</span></div>
+        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ years:</span>      <span class="text-green">3</span></div>
+        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ stack:</span>      [<span class="text-violet">Java</span>, <span class="text-violet">Spring</span>, <span class="text-violet">Node</span>, <span class="text-violet">React</span>]</div>
+        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ status:</span>     <span class="text-green">OPEN_TO_WORK</span> <span class="caret"></span></div>
       </div>
     </div>
 
   </div>
 </header>
+
+<script>
+  const CMD = 'whoami --verbose';
+  const cmdEl = document.getElementById('terminal-cmd') as HTMLElement;
+  const cursorEl = document.getElementById('terminal-cursor') as HTMLElement;
+  const lines = document.querySelectorAll<HTMLElement>('.terminal-line');
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    cmdEl.textContent = CMD;
+    lines.forEach((l) => { l.style.opacity = '1'; });
+    cursorEl.style.display = 'none';
+  } else {
+    let i = 0;
+    function typeCmd() {
+      if (i < CMD.length) {
+        cmdEl.textContent += CMD[i++];
+        setTimeout(typeCmd, 48);
+      } else {
+        cursorEl.style.display = 'none';
+        lines.forEach((line, idx) => {
+          setTimeout(() => {
+            line.style.transition = 'opacity 0.25s ease';
+            line.style.opacity = '1';
+          }, idx * 160);
+        });
+      }
+    }
+    setTimeout(typeCmd, 900);
+  }
+</script>
