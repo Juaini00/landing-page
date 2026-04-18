@@ -1,11 +1,67 @@
 ---
-import Welcome from '../components/Welcome.astro';
+// src/pages/index.astro
+import '../styles/global.css';
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+import Experience from '../components/Experience.astro';
+import Stack from '../components/Stack.astro';
+import Projects from '../components/Projects.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import en from '../i18n/en.json';
+import id from '../i18n/id.json';
+
+const translations = { en, id };
+const translationsJson = JSON.stringify(translations);
 ---
 
 <Layout>
-	<Welcome />
+  <Nav />
+  <main>
+    <Hero />
+    <Stats />
+    <Experience />
+    <Stack />
+    <Projects />
+    <Contact />
+  </main>
+  <Footer />
+
+  <script define:vars={{ translationsJson }}>
+    const translations = JSON.parse(translationsJson);
+
+    function applyLang(lang) {
+      const t = translations[lang] ?? translations['en'];
+      document.documentElement.setAttribute('lang', lang);
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.dataset.i18n;
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+    }
+
+    function updateToggleUI(lang) {
+      document.querySelectorAll('[data-lang-option]').forEach((opt) => {
+        const isActive = opt.dataset.langOption === lang;
+        opt.style.opacity = isActive ? '1' : '0.4';
+        opt.style.fontWeight = isActive ? '600' : '400';
+      });
+    }
+
+    const stored = localStorage.getItem('lang') ?? 'en';
+    applyLang(stored);
+    updateToggleUI(stored);
+
+    document.querySelectorAll('[data-lang-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const current = localStorage.getItem('lang') ?? 'en';
+        const next = current === 'en' ? 'id' : 'en';
+        localStorage.setItem('lang', next);
+        applyLang(next);
+        updateToggleUI(next);
+      });
+    });
+  </script>
 </Layout>
