@@ -1,11 +1,11 @@
 ---
 // src/components/Hero.astro
 ---
-<header class="py-[120px_0_80px] relative">
-  <div class="wrap flex flex-col md:grid md:grid-cols-[1.4fr_1fr] md:gap-x-16 md:items-center">
+<header class="py-[80px_0_80px] relative">
+  <div class="wrap flex flex-col md:grid md:grid-cols-[1.4fr_1fr] md:grid-rows-[auto_auto] md:gap-x-16 md:gap-y-8 md:items-start">
 
-    <!-- 1st on mobile: eyebrow + heading -->
-    <div class="fade-up order-1 md:order-none" style="transition-delay: 100ms">
+    <!-- 1st on mobile, col-1 row-1 on desktop: eyebrow + heading -->
+    <div class="fade-up order-1 md:col-start-1 md:row-start-1 md:self-end" style="transition-delay: 100ms">
       <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7 min-h-[16px]">
         <span style="display:inline-block;width:24px;height:1px;background:var(--color-accent);flex-shrink:0"></span>
         <span id="eyebrow-text"></span><span class="type-caret" id="eyebrow-caret"></span>
@@ -20,8 +20,8 @@
       </h1>
     </div>
 
-    <!-- 2nd on mobile: avatar scene / right column on desktop (spans both rows) -->
-    <div class="scene fade-up order-2 md:order-none md:row-span-2 mt-8 md:mt-0" aria-hidden="true" style="transition-delay: 300ms">
+    <!-- 2nd on mobile, col-2 spanning both rows on desktop -->
+    <div class="scene fade-up order-2 md:col-start-2 md:row-start-1 md:row-span-2 mt-8 md:mt-0" aria-hidden="true" style="transition-delay: 300ms">
       <div class="avatar-wrap">
         <div class="avatar-frame">
           <img src="/juaini-avatar.jpeg" alt="Juaini" />
@@ -42,8 +42,8 @@
       <div class="float-chip c4"><span class="d"></span>Redis</div>
     </div>
 
-    <!-- 3rd on mobile: role-line + paragraph + CTA / continues left column on desktop -->
-    <div class="fade-up order-3 md:order-none mt-8 md:mt-7" style="transition-delay: 200ms">
+    <!-- 3rd on mobile, col-1 row-2 on desktop: role-line + paragraph + CTA -->
+    <div class="fade-up order-3 md:col-start-1 md:row-start-2 md:self-start mt-8 md:mt-0" style="transition-delay: 200ms">
       <div class="role-line" aria-live="polite">
         <span class="arrow">$</span>
         <span>currently:</span>
