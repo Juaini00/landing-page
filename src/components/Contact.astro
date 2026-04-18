@@ -2,35 +2,71 @@
 // src/components/Contact.astro
 ---
 <section
-  class="py-[140px] text-center"
-  style="background: radial-gradient(ellipse at top, color-mix(in oklab, var(--color-accent) 10%, transparent), transparent 60%);"
+  class="py-[140px] relative overflow-hidden"
+  style="background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklab, var(--color-accent) 14%, transparent), transparent 60%), radial-gradient(ellipse 60% 40% at 80% 100%, color-mix(in oklab, var(--color-violet) 10%, transparent), transparent 60%);"
   id="contact"
 >
-  <div class="wrap">
+  <!-- Ambient grid overlay -->
+  <div class="absolute inset-0 pointer-events-none opacity-50"
+       style="background-image: linear-gradient(to right, color-mix(in oklab, var(--color-accent) 10%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--color-accent) 10%, transparent) 1px, transparent 1px); background-size: 80px 80px; mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%); -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);"></div>
+
+  <div class="wrap relative z-10">
+    <div class="text-center">
+      <div class="contact-eyebrow inline-flex fade-up">
+        <span class="pulse-dot"></span>
+        <span data-i18n="contact.eyebrow">Currently accepting projects · Q2 2026</span>
+      </div>
+    </div>
+
     <h2
-      class="font-serif font-normal text-[clamp(48px,8vw,96px)] leading-[.98] tracking-[-0.02em] m-0 mb-7 fade-up"
+      class="font-serif font-normal text-center text-[clamp(56px,9vw,120px)] leading-[.95] tracking-[-0.025em] m-0 mb-8 fade-up"
+      style="transition-delay: 100ms"
       data-i18n="contact.heading"
-    >Got a backend that needs a <em class="text-accent not-italic">steady hand?</em></h2>
+    >Got a backend<br/>that needs a <em class="text-accent italic font-normal">steady hand?</em></h2>
 
     <p
-      class="text-ink-dim max-w-[560px] mx-auto mb-10 text-[17px] fade-up"
-      style="transition-delay: 100ms"
-      data-i18n="contact.sub"
-    >I'm open to freelance engagements, full-time roles, and contract work — especially anything involving Spring Boot, Node microservices, or legacy systems that need straightening out.</p>
-
-    <a
-      href="mailto:juaini742@gmail.com"
-      class="inline-flex items-center gap-2.5 px-[30px] py-[18px] rounded-full text-[15px] font-medium bg-accent text-[#111] hover:bg-accent-soft transition-colors fade-up"
+      class="text-ink-dim max-w-[620px] mx-auto mb-14 text-lg leading-[1.6] text-center fade-up"
       style="transition-delay: 200ms"
-    >
-      <span data-i18n="contact.cta">juaini742@gmail.com</span>
-      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-    </a>
+      data-i18n="contact.sub"
+    >I'm open to <strong class="text-ink font-medium">freelance engagements</strong>, <strong class="text-ink font-medium">full-time roles</strong>, and <strong class="text-ink font-medium">contract work</strong> — especially anything involving Spring Boot, Node microservices, mobile apps, or legacy systems that need straightening out.</p>
 
-    <div class="mt-8 flex justify-center gap-6 font-mono text-[13px] text-ink-dim fade-up" style="transition-delay: 300ms">
-      <a href="https://www.linkedin.com/in/juaini-i" target="_blank" class="hover:text-accent transition-colors">LinkedIn ↗</a>
-      <a href="https://portfolio-juaini.vercel.app" target="_blank" class="hover:text-accent transition-colors">Portfolio ↗</a>
-      <a href="tel:+6285751633160" class="hover:text-accent transition-colors">+62 857 5163 3160</a>
+    <div class="fade-up" style="transition-delay: 300ms">
+      <a class="mail-card" href="mailto:juaini742@gmail.com">
+        <div class="mail-card-head">
+          <span class="traffic"><span></span><span></span><span></span></span>
+          <span class="file">— send_message.sh</span>
+          <span class="live">replies within 24h</span>
+        </div>
+        <div class="mail-card-body">
+          <div class="glyph"><img src="/juaini-avatar.jpeg" alt="Juaini" /></div>
+          <div>
+            <div class="meta-lbl" data-i18n="contact.mail.label">Best way to reach me</div>
+            <div class="email">juaini742@gmail.com</div>
+          </div>
+          <div class="arrow-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="contact-channels fade-up" style="transition-delay: 400ms">
+      <a class="channel" href="https://www.linkedin.com/in/juaini-i" target="_blank" rel="noopener">
+        <div class="ch-lbl">LinkedIn</div>
+        <div class="ch-val">@juaini-i <span class="ext">↗</span></div>
+      </a>
+      <a class="channel" href="tel:+6285751633160">
+        <div class="ch-lbl">WhatsApp</div>
+        <div class="ch-val">+62 857 5163 3160 <span class="ext">↗</span></div>
+      </a>
+    </div>
+
+    <div class="avail-strip fade-up" style="transition-delay: 500ms">
+      <div class="av-item"><span style="color:var(--color-green)">●</span> <b data-i18n="contact.avail.status">Available</b> <span data-i18n="contact.avail.from">from May 2026</span></div>
+      <div class="sep"></div>
+      <div class="av-item">🌏 UTC+8 · <b>Kalimantan Selatan</b></div>
+      <div class="sep"></div>
+      <div class="av-item" data-i18n="contact.avail.remote">Remote-friendly</div>
     </div>
   </div>
 </section>

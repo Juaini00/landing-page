@@ -5,18 +5,22 @@ import { projects } from '../data/projects';
 <section class="py-[120px] border-b border-border" id="projects">
   <div class="wrap">
 
-    <div class="flex justify-between items-end gap-10 mb-14 flex-col md:flex-row fade-up">
-      <div>
-        <div class="flex items-center gap-[10px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.18em] mb-3.5
-                    before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-accent"
-             data-i18n="projects.kicker">03 · Selected work</div>
-        <h2 class="font-serif font-normal text-[clamp(40px,5vw,64px)] leading-[1.02] tracking-[-0.02em] m-0 max-w-[720px]"
-            data-i18n="projects.title">Systems in <em class="text-accent not-italic">production</em>, not side projects.</h2>
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div class="sec-head-mid">
+        <div class="sec-kicker">
+          <span class="bar"></span>
+          <span data-i18n="projects.kicker.label">Selected work</span>
+          <span class="meta">// 3 case studies</span>
+        </div>
+        <h2 class="sec-title" data-i18n="projects.title">Systems in <em>production</em>,<br/>not side projects.</h2>
       </div>
-      <p class="text-ink-dim text-base max-w-[320px]" data-i18n="projects.desc">
-        A sample of architectures I've designed or contributed to.
-      </p>
+      <div class="sec-side">
+        <div class="sec-stat"><span class="pulse"></span>Live in <b>3 domains</b></div>
+        <p class="sec-desc" data-i18n="projects.desc">A sample of architectures I've designed or contributed to — from monoliths to event-driven microservices.</p>
+      </div>
     </div>
+    <div class="sec-rule"></div>
 
     <div class="grid gap-6">
       {projects.map(({ i18nPrefix, tech, layout, diagramHtml }, i) => (
