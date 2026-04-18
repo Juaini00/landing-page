@@ -64,4 +64,20 @@ const translationsJson = JSON.stringify(translations);
       });
     });
   </script>
+
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '-4% 0px' }
+    );
+
+    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+  </script>
 </Layout>
