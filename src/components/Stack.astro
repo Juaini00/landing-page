@@ -1,0 +1,49 @@
+---
+// src/components/Stack.astro
+const cells = [
+  { key: 'languages', icon: '{ }', items: ['Java', 'TypeScript', 'JavaScript', 'Go', 'Rust', 'Kotlin'] },
+  { key: 'backend',   icon: '☕',  items: ['Spring Boot', 'Jersey', 'Express', 'NestJS', 'Axum', 'Gin', 'Maven', 'Gradle', 'npm', 'pnpm', 'Bun'] },
+  { key: 'frontend',  icon: '◈',   items: ['React', 'Next.js', 'Vue', 'Angular', 'Tailwind', 'Figma'] },
+  { key: 'mobile',    icon: '◱',   items: ['React Native', 'Kotlin Multiplatform'] },
+  { key: 'data',      icon: '◴',   items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Hibernate / JPA', 'TypeORM', 'Prisma'] },
+  { key: 'cloud',     icon: 'λ',   items: ['AWS Lambda', 'Docker', 'GitHub Actions', 'Grafana', 'CloudPanel'] },
+  { key: 'testing',   icon: '✓',   items: ['JUnit', 'Mockito', 'Jest', 'Playwright', 'Swagger', 'Postman'] },
+  { key: 'practices', icon: '✎',   items: ['Clean Architecture', 'TDD', 'Agile / Scrum', 'Code Review', 'Jira', 'Confluence', 'Notion'] },
+];
+---
+<section class="py-[120px] border-b border-border" id="stack">
+  <div class="wrap">
+
+    <div class="flex justify-between items-end gap-10 mb-14 flex-col md:flex-row fade-up">
+      <div>
+        <div class="flex items-center gap-[10px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.18em] mb-3.5
+                    before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-accent"
+             data-i18n="stack.kicker">02 · Toolbox</div>
+        <h2 class="font-serif font-normal text-[clamp(40px,5vw,64px)] leading-[1.02] tracking-[-0.02em] m-0 max-w-[720px]"
+            data-i18n="stack.title">The stack I reach for on <em class="text-accent not-italic">day one.</em></h2>
+      </div>
+      <p class="text-ink-dim text-base max-w-[320px]" data-i18n="stack.desc">
+        Full-stack capable, backend-first.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-border border border-border rounded-[14px] overflow-hidden">
+      {cells.map(({ key, icon, items }, i) => (
+        <div class="bg-bg p-7 min-h-[200px] flex flex-col gap-3 hover:bg-bg-2 transition-colors fade-up" style={`transition-delay: ${i * 60}ms`}>
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center font-mono text-sm font-semibold text-accent"
+               style="background: color-mix(in oklab, var(--color-accent) 14%, transparent);">
+            {icon}
+          </div>
+          <h4 class="font-mono text-[11px] text-ink-mute uppercase tracking-[0.14em] m-0"
+              data-i18n={`stack.${key}`}>{key}</h4>
+          <div class="flex flex-wrap gap-1.5 mt-auto">
+            {items.map((item) => (
+              <span class="text-[13px] text-ink px-2.5 py-1 rounded-md bg-bg-2 border border-border-2">{item}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

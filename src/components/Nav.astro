@@ -1,0 +1,41 @@
+---
+// src/components/Nav.astro
+---
+<nav class="sticky top-0 z-20 border-b border-border backdrop-blur-md"
+     style="background: color-mix(in oklab, var(--color-bg) 78%, transparent);">
+  <div class="wrap nav-inner flex items-center justify-between py-[18px]">
+
+    <div class="flex items-center gap-[10px] font-mono text-sm tracking-[0.02em]">
+      <span class="inline-block w-[10px] h-[10px] rounded-sm bg-accent"
+            style="box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 25%, transparent);"></span>
+      juaini.dev
+    </div>
+
+    <div class="hidden md:flex gap-7 text-sm text-ink-dim">
+      <a href="#work"     data-i18n="nav.work"     class="hover:text-ink transition-colors">Work</a>
+      <a href="#stack"    data-i18n="nav.stack"    class="hover:text-ink transition-colors">Stack</a>
+      <a href="#projects" data-i18n="nav.projects" class="hover:text-ink transition-colors">Projects</a>
+      <a href="#contact"  data-i18n="nav.contact"  class="hover:text-ink transition-colors">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Language toggle -->
+      <button
+        data-lang-toggle
+        aria-label="Toggle language"
+        class="font-mono text-xs text-ink-dim border border-border-2 rounded-full px-3 py-1.5 flex gap-1.5 hover:border-accent transition-colors"
+      >
+        <span data-lang-option="en">EN</span>
+        <span class="text-ink-mute">|</span>
+        <span data-lang-option="id">ID</span>
+      </button>
+
+      <a
+        href="#contact"
+        data-i18n="nav.cta"
+        class="font-mono text-[13px] px-4 py-[9px] border border-border-2 rounded-full hover:border-accent hover:text-accent transition-all"
+      >Let's talk →</a>
+    </div>
+
+  </div>
+</nav>

@@ -1,0 +1,94 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-bg:          #0b0c0f;
+  --color-bg-2:        #111318;
+  --color-ink:         #f5f3ee;
+  --color-ink-dim:     #9aa0a8;
+  --color-ink-mute:    #5b6069;
+  --color-border:      #1d2026;
+  --color-border-2:    #262a32;
+  --color-accent:      #ff7a45;
+  --color-accent-soft: #ffb38a;
+  --color-green:       #7ee0a6;
+  --color-violet:      #b5a8ff;
+
+  /* Font families */
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-sans:  'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+
+/* Base reset */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.55;
+}
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--color-accent); color: #111; }
+
+/* Layout wrapper */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+/* Active nav link */
+nav a[data-nav-active] {
+  color: var(--color-ink);
+  position: relative;
+}
+nav a[data-nav-active]::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-accent);
+  border-radius: 1px;
+}
+
+/* Blinking caret animation for terminal card */
+@keyframes blink { 50% { opacity: 0; } }
+.caret {
+  display: inline-block;
+  width: 8px; height: 16px;
+  background: var(--color-accent);
+  vertical-align: -3px;
+  margin-left: 2px;
+  animation: blink 1s steps(2) infinite;
+}
+
+/* ── Scroll animations ────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Nav slide-down on load */
+nav {
+  animation: nav-enter 0.5s ease forwards;
+}
+@keyframes nav-enter {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { opacity: 1; transform: none; transition: none; }
+  nav { animation: none; }
+}
