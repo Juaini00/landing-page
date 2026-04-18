@@ -108,6 +108,27 @@ nav {
   transform: translateY(0);
 }
 
+/* ── Hero grid ──────────────────────────────────────── */
+.hero-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+@media (min-width: 768px) {
+  .hero-grid {
+    display: grid;
+    grid-template-areas: "heading scene" "body scene";
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 64px;
+    row-gap: 32px;
+    align-items: start;
+  }
+  .hero-heading { grid-area: heading; align-self: end; }
+  .hero-body    { grid-area: body;    align-self: start; }
+  .hero-scene   { grid-area: scene; }
+}
+
 /* ── 3D scene / hero right panel ────────────────────── */
 .scene {
   position: relative;
