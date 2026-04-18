@@ -41,7 +41,20 @@ a { color: inherit; text-decoration: none; }
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
 
 /* Active nav link */
-nav a[data-nav-active] { color: var(--color-ink); }
+nav a[data-nav-active] {
+  color: var(--color-ink);
+  position: relative;
+}
+nav a[data-nav-active]::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-accent);
+  border-radius: 1px;
+}
 
 /* Blinking caret animation for terminal card */
 @keyframes blink { 50% { opacity: 0; } }
