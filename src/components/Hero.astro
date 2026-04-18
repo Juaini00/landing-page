@@ -1,0 +1,70 @@
+---
+// src/components/Hero.astro
+---
+<header class="py-[120px_0_100px] relative">
+  <div class="wrap grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-16 items-end">
+
+    <!-- Left: Text content -->
+    <div>
+      <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7
+                  before:content-[''] before:w-6 before:h-px before:bg-accent"
+           data-i18n="hero.eyebrow">
+        Software Engineer · Available for work
+      </div>
+
+      <h1 class="font-serif font-normal text-[clamp(56px,8vw,104px)] leading-[.95] tracking-[-0.02em] m-0 mb-7">
+        <span data-i18n="hero.h1.line1">Backend systems,</span><br/>
+        <span data-i18n="hero.h1.line2">built to</span>
+        <em class="not-italic text-accent" data-i18n="hero.h1.em1">scale</em>
+        <span data-i18n="hero.h1.line3">&amp;</span><br/>
+        <em class="not-italic text-accent" data-i18n="hero.h1.em2">last.</em>
+      </h1>
+
+      <p class="max-w-[540px] text-ink-dim text-lg leading-[1.55] mb-10"
+         data-i18n="hero.sub">
+        I'm <strong class="text-ink font-medium">Juaini</strong> — a software engineer with <strong class="text-ink font-medium">3+ years</strong>
+        shipping production Java &amp; Node.js services. I design clean architectures,
+        harden APIs, and ship microservices that quietly run the business.
+      </p>
+
+      <div class="flex gap-3.5 flex-wrap">
+        <a
+          href="mailto:juaini742@gmail.com"
+          class="inline-flex items-center gap-2.5 px-[22px] py-[14px] rounded-full text-sm font-medium tracking-[0.01em] bg-accent text-[#111] hover:bg-accent-soft transition-colors active:translate-y-px"
+        >
+          <span data-i18n="hero.cta.primary">Start a project</span>
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a
+          href="https://portfolio-juaini.vercel.app"
+          target="_blank"
+          data-i18n="hero.cta.secondary"
+          class="inline-flex items-center gap-2.5 px-[22px] py-[14px] rounded-full text-sm font-medium tracking-[0.01em] border border-border-2 text-ink hover:border-ink-dim transition-colors active:translate-y-px"
+        >
+          View portfolio
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: Terminal card -->
+    <div class="bg-bg-2 border border-border rounded-[14px] overflow-hidden font-mono text-[13px]"
+         style="box-shadow: 0 40px 80px -40px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.02) inset;">
+      <div class="flex items-center gap-2 px-3.5 py-3 border-b border-border text-ink-mute text-xs">
+        <span class="w-[11px] h-[11px] rounded-full bg-[#3a3d44]"></span>
+        <span class="w-[11px] h-[11px] rounded-full bg-[#3a3d44]"></span>
+        <span class="w-[11px] h-[11px] rounded-full bg-[#3a3d44]"></span>
+        <span class="ml-auto font-mono text-[11px] tracking-[0.05em]">~/juaini — zsh</span>
+      </div>
+      <div class="p-5 leading-[1.75]">
+        <div><span class="text-green">$</span> <span class="text-ink">whoami --verbose</span></div>
+        <div><span class="text-ink-mute">→ name:</span>       <span class="text-accent-soft">"Juaini"</span></div>
+        <div><span class="text-ink-mute">→ role:</span>       <span class="text-accent-soft">"Software Engineer"</span></div>
+        <div><span class="text-ink-mute">→ location:</span>   <span class="text-accent-soft">"Kalimantan Selatan, ID"</span></div>
+        <div><span class="text-ink-mute">→ years:</span>      <span class="text-green">3</span></div>
+        <div><span class="text-ink-mute">→ stack:</span>      [<span class="text-violet">Java</span>, <span class="text-violet">Spring</span>, <span class="text-violet">Node</span>, <span class="text-violet">React</span>]</div>
+        <div><span class="text-ink-mute">→ status:</span>     <span class="text-green">OPEN_TO_WORK</span> <span class="caret"></span></div>
+      </div>
+    </div>
+
+  </div>
+</header>
