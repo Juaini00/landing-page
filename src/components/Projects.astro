@@ -1,0 +1,90 @@
+---
+// src/components/Projects.astro
+---
+<section class="py-[120px] border-b border-border" id="projects">
+  <div class="wrap">
+
+    <div class="flex justify-between items-end gap-10 mb-14 flex-col md:flex-row">
+      <div>
+        <div class="flex items-center gap-[10px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.18em] mb-3.5
+                    before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-accent"
+             data-i18n="projects.kicker">03 · Selected work</div>
+        <h2 class="font-serif font-normal text-[clamp(40px,5vw,64px)] leading-[1.02] tracking-[-0.02em] m-0 max-w-[720px]"
+            data-i18n="projects.title">Systems in <em class="text-accent not-italic">production</em>, not side projects.</h2>
+      </div>
+      <p class="text-ink-dim text-base max-w-[320px]" data-i18n="projects.desc">
+        A sample of architectures I've designed or contributed to.
+      </p>
+    </div>
+
+    <div class="grid gap-6">
+
+      <!-- Project 01 -->
+      <article class="grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-12 items-center p-10 border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors">
+        <div>
+          <div class="font-mono text-[12px] text-accent tracking-[0.15em] mb-3.5" data-i18n="project.01.num">/ 01 — MONOLITH</div>
+          <h3 class="font-serif text-[34px] font-normal leading-[1.1] m-0 mb-3.5 tracking-[-0.01em]" data-i18n="project.01.title">Enterprise Event Management Platform</h3>
+          <p class="text-ink-dim m-0 mb-[18px] text-[15px] leading-[1.6]" data-i18n="project.01.desc">International-scale participant registration, activity management, and dynamic group assignment.</p>
+          <div class="flex gap-[18px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.1em]">
+            <span><b class="text-ink font-medium">Spring Boot</b></span>
+            <span><b class="text-ink font-medium">PostgreSQL</b></span>
+            <span><b class="text-ink font-medium">Redis</b></span>
+          </div>
+        </div>
+        <div class="bg-[#0f1116] border border-border-2 rounded-[10px] p-[22px] font-mono text-[12px] text-ink-dim leading-[1.9]">
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-accent rounded-md text-accent bg-bg-2">API Gateway</span><span class="text-ink-mute">→</span><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Event Service</span></div>
+          <div class="ml-[110px]"><span class="text-ink-mute">↓</span></div>
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Auth · JWT</span><span class="text-ink-mute">+</span><span class="px-3 py-2 border border-violet rounded-md text-violet bg-bg-2">RBAC</span><span class="text-ink-mute">+</span><span class="px-3 py-2 border border-green rounded-md text-green bg-bg-2">Session · Redis</span></div>
+          <div class="ml-10"><span class="text-ink-mute">↓</span></div>
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Participants</span><span class="text-ink-mute">·</span><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Activities</span><span class="text-ink-mute">·</span><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Groups</span></div>
+          <div class="flex items-center gap-2.5 mt-1.5"><span class="text-ink-mute">Storage:</span><span class="px-3 py-2 border border-green rounded-md text-green bg-bg-2">PostgreSQL</span></div>
+        </div>
+      </article>
+
+      <!-- Project 02 -->
+      <article class="grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-12 items-center p-10 border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors">
+        <div class="bg-[#0f1116] border border-border-2 rounded-[10px] p-[22px] font-mono text-[12px] text-ink-dim leading-[1.9]">
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Order Event</span><span class="text-ink-mute">→</span><span class="px-3 py-2 border border-accent rounded-md text-accent bg-bg-2">λ dispatcher</span></div>
+          <div class="ml-[90px]"><span class="text-ink-mute">↓</span></div>
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-violet rounded-md text-violet bg-bg-2">λ legal-entity</span><span class="text-ink-mute">+</span><span class="px-3 py-2 border border-violet rounded-md text-violet bg-bg-2">λ warehouse-select</span></div>
+          <div class="ml-[60px]"><span class="text-ink-mute">↓</span></div>
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Fulfillment Worker</span><span class="text-ink-mute">→</span><span class="px-3 py-2 border border-green rounded-md text-green bg-bg-2">MySQL</span></div>
+          <div class="mt-1.5 text-ink-mute">// driven by seller-ownership config</div>
+        </div>
+        <div>
+          <div class="font-mono text-[12px] text-accent tracking-[0.15em] mb-3.5" data-i18n="project.02.num">/ 02 — MICROSERVICES</div>
+          <h3 class="font-serif text-[34px] font-normal leading-[1.1] m-0 mb-3.5 tracking-[-0.01em]" data-i18n="project.02.title">Warehouse &amp; Logistics Event-Driven System</h3>
+          <p class="text-ink-dim m-0 mb-[18px] text-[15px] leading-[1.6]" data-i18n="project.02.desc">Event-driven architecture on AWS Lambda + Jersey.</p>
+          <div class="flex gap-[18px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.1em]">
+            <span><b class="text-ink font-medium">Jersey</b></span>
+            <span><b class="text-ink font-medium">AWS Lambda</b></span>
+            <span><b class="text-ink font-medium">MySQL</b></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 03 -->
+      <article class="grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-12 items-center p-10 border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors">
+        <div>
+          <div class="font-mono text-[12px] text-accent tracking-[0.15em] mb-3.5" data-i18n="project.03.num">/ 03 — FINTECH</div>
+          <h3 class="font-serif text-[34px] font-normal leading-[1.1] m-0 mb-3.5 tracking-[-0.01em]" data-i18n="project.03.title">Loan Pre-Closure Calculation Engine</h3>
+          <p class="text-ink-dim m-0 mb-[18px] text-[15px] leading-[1.6]" data-i18n="project.03.desc">Implemented complex loan pre-closure calculation modules and secure RESTful APIs.</p>
+          <div class="flex gap-[18px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.1em]">
+            <span><b class="text-ink font-medium">Spring Boot</b></span>
+            <span><b class="text-ink font-medium">PostgreSQL</b></span>
+            <span><b class="text-ink font-medium">Secure REST</b></span>
+          </div>
+        </div>
+        <div class="bg-[#0f1116] border border-border-2 rounded-[10px] p-[22px] font-mono text-[12px] text-ink-dim leading-[1.9]">
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Client</span><span class="text-ink-mute">→</span><span class="px-3 py-2 border border-accent rounded-md text-accent bg-bg-2">REST /loans/pre-close</span></div>
+          <div class="ml-[50px]"><span class="text-ink-mute">↓</span></div>
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-violet rounded-md text-violet bg-bg-2">Interest Calc</span><span class="text-ink-mute">+</span><span class="px-3 py-2 border border-violet rounded-md text-violet bg-bg-2">Penalty Rules</span></div>
+          <div class="ml-[50px]"><span class="text-ink-mute">↓</span></div>
+          <div class="flex items-center gap-2.5"><span class="px-3 py-2 border border-border-2 rounded-md bg-bg-2 text-ink">Txn Service</span><span class="text-ink-mute">→</span><span class="px-3 py-2 border border-green rounded-md text-green bg-bg-2">PostgreSQL</span></div>
+          <div class="mt-1.5 text-ink-mute">// audited · idempotent · signed</div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
