@@ -582,8 +582,12 @@ h2.sec-title em {
   .sec-head { grid-template-columns: 1fr; gap: 16px; }
   .sec-num { font-size: 88px; }
   .sec-side { align-items: flex-start; text-align: left; }
-  .float-chip.c1, .float-chip.c2 { left: -8px; }
-  .float-chip.c3, .float-chip.c4 { right: -8px; }
+  .scene { height: 320px; }
+  .float-chip { font-size: 10px; padding: 6px 10px; }
+  .float-chip.c1 { top: 30%; left: 0; }
+  .float-chip.c2 { top: 58%; left: 0; }
+  .float-chip.c3 { bottom: 20%; right: 0; }
+  .float-chip.c4 { top: 10%; right: 0; }
 }
 @media (max-width: 720px) {
   .contact-channels { grid-template-columns: 1fr; }

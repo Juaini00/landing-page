@@ -5,7 +5,7 @@
   <div class="wrap grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-16 items-center">
 
     <!-- Left: Text content -->
-    <div class="fade-up" style="transition-delay: 100ms">
+    <div class="fade-up order-2 md:order-none" style="transition-delay: 100ms">
       <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7 min-h-[16px]"
            style="before:content-[''] before:w-6 before:h-px before:bg-accent">
         <span style="display:inline-block;width:24px;height:1px;background:var(--color-accent);flex-shrink:0"></span>
@@ -42,18 +42,11 @@
           <span data-i18n="hero.cta.primary">Start a project</span>
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
-        <a
-          href="#projects"
-          data-i18n="hero.cta.secondary"
-          class="inline-flex items-center gap-2.5 px-[22px] py-[14px] rounded-full text-sm font-medium tracking-[0.01em] border border-border-2 text-ink hover:border-ink-dim transition-colors active:translate-y-px"
-        >
-          View portfolio
-        </a>
       </div>
     </div>
 
-    <!-- Right: Avatar scene -->
-    <div class="scene fade-up" aria-hidden="true" style="transition-delay: 300ms">
+    <!-- Right: Avatar scene (shown first on mobile via order) -->
+    <div class="scene fade-up order-first md:order-none" aria-hidden="true" style="transition-delay: 300ms">
       <div class="avatar-wrap">
         <div class="avatar-frame">
           <img src="/juaini-avatar.jpeg" alt="Juaini" />
