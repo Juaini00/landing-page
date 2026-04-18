@@ -1,0 +1,74 @@
+---
+// src/components/Experience.astro
+---
+<section class="py-[120px] border-b border-border" id="work">
+  <div class="wrap">
+
+    <div class="flex justify-between items-end gap-10 mb-14 flex-col md:flex-row md:items-end">
+      <div>
+        <div class="flex items-center gap-[10px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.18em] mb-3.5
+                    before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-accent"
+             data-i18n="exp.kicker">01 · Experience</div>
+        <h2 class="font-serif font-normal text-[clamp(40px,5vw,64px)] leading-[1.02] tracking-[-0.02em] m-0 max-w-[720px]"
+            data-i18n="exp.title">Shipping backend systems across <em class="text-accent not-italic">enterprise</em> domains.</h2>
+      </div>
+      <p class="text-ink-dim text-base max-w-[320px]" data-i18n="exp.desc">
+        From event management at international scale to event-driven warehouse logistics and financial services.
+      </p>
+    </div>
+
+    <!-- PT Rivolta -->
+    <article class="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-10 py-9 border-t border-border first:border-t-0 first:pt-0">
+      <div class="font-mono text-[13px] text-ink-dim">
+        <span data-i18n="exp.rivolta.date">Apr 2024</span> —
+        <span class="inline-flex items-center gap-1.5 text-green
+                     before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-green
+                     before:shadow-[0_0_0_3px_color-mix(in_oklab,var(--color-green)_30%,transparent)]"
+              data-i18n="exp.rivolta.present">Present</span>
+      </div>
+      <div>
+        <h3 class="font-serif text-[28px] leading-[1.1] m-0 mb-1 font-normal" data-i18n="exp.rivolta.role">Software Engineer</h3>
+        <div class="text-ink-dim text-sm mb-[18px]" data-i18n="exp.rivolta.company">PT Rivolta Technology Solutions</div>
+        <ul class="list-none p-0 m-0 grid gap-2.5">
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b1">Built an <strong class="text-ink font-medium">enterprise event management platform</strong> in Spring Boot + PostgreSQL + Redis.</li>
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b2">Engineered <strong class="text-ink font-medium">warehouse &amp; logistics microservices</strong> with Jersey, AWS Lambda, and MySQL.</li>
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b3">Contributed to a <strong class="text-ink font-medium">financial services</strong> monolith in Spring Boot.</li>
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b4">Stood up internal <strong class="text-ink font-medium">starter templates</strong> with standardized CI/CD.</li>
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b5">Mentored interns on code review, debugging, and design patterns.</li>
+        </ul>
+        <div class="flex flex-wrap gap-1.5 mt-[18px]">
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Spring Boot</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Jersey</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">AWS Lambda</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">PostgreSQL</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">MySQL</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Redis</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Microservices</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">RBAC / JWT</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Backend Engineer -->
+    <article class="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-10 py-9 border-t border-border">
+      <div class="font-mono text-[13px] text-ink-dim" data-i18n="exp.be.date">Aug 2023 — Feb 2025</div>
+      <div>
+        <h3 class="font-serif text-[28px] leading-[1.1] m-0 mb-1 font-normal" data-i18n="exp.be.role">Backend Engineer</h3>
+        <div class="text-ink-dim text-sm mb-[18px]" data-i18n="exp.be.company">Java &amp; Spring Boot Developer</div>
+        <ul class="list-none p-0 m-0 grid gap-2.5">
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.be.b1">Built production-ready backend services with <strong class="text-ink font-medium">JWT &amp; RBAC</strong> authentication.</li>
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.be.b2">Developed RESTful APIs with optimized DB queries (PostgreSQL / MySQL).</li>
+          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.be.b3">Applied <strong class="text-ink font-medium">clean architecture</strong> and <strong class="text-ink font-medium">SOLID</strong> principles.</li>
+        </ul>
+        <div class="flex flex-wrap gap-1.5 mt-[18px]">
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Java</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Spring Boot</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">JWT</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">REST</span>
+          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">SOLID</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
