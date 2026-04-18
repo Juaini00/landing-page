@@ -1,0 +1,47 @@
+---
+// src/components/Projects.astro
+import { projects } from '../data/projects';
+---
+<section class="py-[120px] border-b border-border" id="projects">
+  <div class="wrap">
+
+    <div class="flex justify-between items-end gap-10 mb-14 flex-col md:flex-row fade-up">
+      <div>
+        <div class="flex items-center gap-[10px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.18em] mb-3.5
+                    before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-accent"
+             data-i18n="projects.kicker">03 · Selected work</div>
+        <h2 class="font-serif font-normal text-[clamp(40px,5vw,64px)] leading-[1.02] tracking-[-0.02em] m-0 max-w-[720px]"
+            data-i18n="projects.title">Systems in <em class="text-accent not-italic">production</em>, not side projects.</h2>
+      </div>
+      <p class="text-ink-dim text-base max-w-[320px]" data-i18n="projects.desc">
+        A sample of architectures I've designed or contributed to.
+      </p>
+    </div>
+
+    <div class="grid gap-6">
+      {projects.map(({ i18nPrefix, tech, layout, diagramHtml }, i) => (
+        <article
+          class={`grid grid-cols-1 ${layout === 'left' ? 'md:grid-cols-[1fr_1.3fr]' : 'md:grid-cols-[1.3fr_1fr]'} gap-8 md:gap-12 items-center p-6 md:p-10 border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors fade-up`}
+          style={`transition-delay: ${i * 150}ms`}
+        >
+          {layout !== 'left' && <div class="overflow-x-auto min-w-0"><div set:html={diagramHtml} /></div>}
+          <div>
+            <div class="font-mono text-[12px] text-accent tracking-[0.15em] mb-3.5"
+                 data-i18n={`${i18nPrefix}.num`}></div>
+            <h3 class="font-serif text-[34px] font-normal leading-[1.1] m-0 mb-3.5 tracking-[-0.01em]"
+                data-i18n={`${i18nPrefix}.title`}></h3>
+            <p class="text-ink-dim m-0 mb-[18px] text-[15px] leading-[1.6]"
+               data-i18n={`${i18nPrefix}.desc`}></p>
+            <div class="flex gap-[18px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.1em]">
+              {tech.map((t) => (
+                <span><b class="text-ink font-medium">{t}</b></span>
+              ))}
+            </div>
+          </div>
+          {layout === 'left' && <div class="overflow-x-auto min-w-0"><div set:html={diagramHtml} /></div>}
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
