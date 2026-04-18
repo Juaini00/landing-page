@@ -1,25 +1,49 @@
 ---
 // src/components/Hero.astro
 ---
-<header class="py-[120px_0_100px] relative">
-  <div class="wrap grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-16 items-center">
+<header class="py-[120px_0_80px] relative">
+  <div class="wrap flex flex-col md:grid md:grid-cols-[1.4fr_1fr] md:gap-x-16 md:items-center">
 
-    <!-- Left: Text content -->
-    <div class="fade-up order-2 md:order-none" style="transition-delay: 100ms">
-      <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7 min-h-[16px]"
-           style="before:content-[''] before:w-6 before:h-px before:bg-accent">
+    <!-- 1st on mobile: eyebrow + heading -->
+    <div class="fade-up order-1 md:order-none" style="transition-delay: 100ms">
+      <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7 min-h-[16px]">
         <span style="display:inline-block;width:24px;height:1px;background:var(--color-accent);flex-shrink:0"></span>
         <span id="eyebrow-text"></span><span class="type-caret" id="eyebrow-caret"></span>
       </div>
 
-      <h1 class="font-serif font-normal text-[clamp(56px,8vw,104px)] leading-[.95] tracking-[-0.02em] m-0 mb-7">
+      <h1 class="font-serif font-normal text-[clamp(48px,8vw,104px)] leading-[.95] tracking-[-0.02em] m-0 mb-0">
         <span data-i18n="hero.h1.line1">Backend systems,</span><br/>
         <span data-i18n="hero.h1.line2">built to</span>
         <em class="italic text-accent font-normal" data-i18n="hero.h1.em1">scale</em>
         <span data-i18n="hero.h1.line3">&amp;</span><br/>
         <em class="italic text-accent font-normal" data-i18n="hero.h1.em2">last.</em>
       </h1>
+    </div>
 
+    <!-- 2nd on mobile: avatar scene / right column on desktop (spans both rows) -->
+    <div class="scene fade-up order-2 md:order-none md:row-span-2 mt-8 md:mt-0" aria-hidden="true" style="transition-delay: 300ms">
+      <div class="avatar-wrap">
+        <div class="avatar-frame">
+          <img src="/juaini-avatar.jpeg" alt="Juaini" />
+        </div>
+        <span class="avatar-corner tl"></span>
+        <span class="avatar-corner tr"></span>
+        <span class="avatar-corner bl"></span>
+        <span class="avatar-corner br"></span>
+        <div class="avatar-info">
+          <span class="name">@juaini · Software Engineer</span>
+          <span class="live">Online</span>
+        </div>
+      </div>
+
+      <div class="float-chip c1"><span class="d"></span>Spring Boot</div>
+      <div class="float-chip c2"><span class="d"></span>AWS λ</div>
+      <div class="float-chip c3"><span class="d"></span>PostgreSQL</div>
+      <div class="float-chip c4"><span class="d"></span>Redis</div>
+    </div>
+
+    <!-- 3rd on mobile: role-line + paragraph + CTA / continues left column on desktop -->
+    <div class="fade-up order-3 md:order-none mt-8 md:mt-7" style="transition-delay: 200ms">
       <div class="role-line" aria-live="polite">
         <span class="arrow">$</span>
         <span>currently:</span>
@@ -42,29 +66,14 @@
           <span data-i18n="hero.cta.primary">Start a project</span>
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
+        <a
+          href="#projects"
+          data-i18n="hero.cta.secondary"
+          class="inline-flex items-center gap-2.5 px-[22px] py-[14px] rounded-full text-sm font-medium tracking-[0.01em] border border-border-2 text-ink hover:border-ink-dim transition-colors active:translate-y-px"
+        >
+          View portfolio
+        </a>
       </div>
-    </div>
-
-    <!-- Right: Avatar scene (shown first on mobile via order) -->
-    <div class="scene fade-up order-first md:order-none" aria-hidden="true" style="transition-delay: 300ms">
-      <div class="avatar-wrap">
-        <div class="avatar-frame">
-          <img src="/juaini-avatar.jpeg" alt="Juaini" />
-        </div>
-        <span class="avatar-corner tl"></span>
-        <span class="avatar-corner tr"></span>
-        <span class="avatar-corner bl"></span>
-        <span class="avatar-corner br"></span>
-        <div class="avatar-info">
-          <span class="name">@juaini · Software Engineer</span>
-          <span class="live">Online</span>
-        </div>
-      </div>
-
-      <div class="float-chip c1"><span class="d"></span>Spring Boot</div>
-      <div class="float-chip c2"><span class="d"></span>AWS λ</div>
-      <div class="float-chip c3"><span class="d"></span>PostgreSQL</div>
-      <div class="float-chip c4"><span class="d"></span>Redis</div>
     </div>
 
   </div>
