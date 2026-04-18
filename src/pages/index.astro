@@ -79,6 +79,20 @@ const translationsJson = JSON.stringify(translations);
     );
 
     document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+    // sec-head reveal observer
+    const headObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in-view');
+            headObserver.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.25, rootMargin: '0px 0px -10% 0px' }
+    );
+    document.querySelectorAll('.sec-head').forEach((el) => headObserver.observe(el));
   </script>
 
   <script>

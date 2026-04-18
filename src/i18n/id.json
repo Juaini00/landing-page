@@ -66,9 +66,14 @@
   "project.03.num": "/ 03 — FINTECH",
   "project.03.title": "Mesin Kalkulasi Pelunasan Pinjaman Lebih Awal",
   "project.03.desc": "Kontribusi sebagai support developer pada monolith layanan keuangan. Mengimplementasikan modul kalkulasi pelunasan pinjaman lebih awal yang kompleks dan API RESTful aman untuk pemrosesan transaksi sensitif.",
+  "contact.eyebrow": "Menerima proyek · Q2 2026",
   "contact.heading": "Punya backend yang butuh <em>tangan yang tepat?</em>",
-  "contact.sub": "Saya terbuka untuk pekerjaan freelance, peran penuh waktu, dan kontrak — sistem backend, aplikasi mobile, atau frontend web. Terutama yang melibatkan Spring Boot, Node.js, React Native, atau sistem yang membutuhkan fondasi arsitektur yang kuat.",
+  "contact.sub": "Saya terbuka untuk <strong>pekerjaan freelance</strong>, <strong>peran penuh waktu</strong>, dan <strong>kontrak</strong> — terutama yang melibatkan Spring Boot, Node microservice, aplikasi mobile, atau sistem yang perlu dirapikan.",
   "contact.cta": "juaini742@gmail.com",
+  "contact.mail.label": "Cara terbaik menghubungi saya",
+  "contact.avail.status": "Tersedia",
+  "contact.avail.from": "mulai Mei 2026",
+  "contact.avail.remote": "Remote-friendly",
   "footer.copy": "© 2026 Juaini · Hulu Sungai Tengah, ID",
   "footer.tagline": "Dibangun dengan semangat Spring Boot ☕"
 }

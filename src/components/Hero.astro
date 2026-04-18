@@ -2,23 +2,30 @@
 // src/components/Hero.astro
 ---
 <header class="py-[120px_0_100px] relative">
-  <div class="wrap grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-16 items-end">
+  <div class="wrap grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-16 items-center">
 
     <!-- Left: Text content -->
     <div class="fade-up" style="transition-delay: 100ms">
-      <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7
-                  before:content-[''] before:w-6 before:h-px before:bg-accent"
-           data-i18n="hero.eyebrow">
-        Software Engineer · Available for work
+      <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7 min-h-[16px]"
+           style="before:content-[''] before:w-6 before:h-px before:bg-accent">
+        <span style="display:inline-block;width:24px;height:1px;background:var(--color-accent);flex-shrink:0"></span>
+        <span id="eyebrow-text"></span><span class="type-caret" id="eyebrow-caret"></span>
       </div>
 
       <h1 class="font-serif font-normal text-[clamp(56px,8vw,104px)] leading-[.95] tracking-[-0.02em] m-0 mb-7">
         <span data-i18n="hero.h1.line1">Backend systems,</span><br/>
         <span data-i18n="hero.h1.line2">built to</span>
-        <em class="not-italic text-accent" data-i18n="hero.h1.em1">scale</em>
+        <em class="italic text-accent font-normal" data-i18n="hero.h1.em1">scale</em>
         <span data-i18n="hero.h1.line3">&amp;</span><br/>
-        <em class="not-italic text-accent" data-i18n="hero.h1.em2">last.</em>
+        <em class="italic text-accent font-normal" data-i18n="hero.h1.em2">last.</em>
       </h1>
+
+      <div class="role-line" aria-live="polite">
+        <span class="arrow">$</span>
+        <span>currently:</span>
+        <span class="role-text" id="role-text"></span>
+        <span class="type-caret"></span>
+      </div>
 
       <p class="max-w-[540px] text-ink-dim text-lg leading-[1.55] mb-10"
          data-i18n="hero.sub">
@@ -45,58 +52,100 @@
       </div>
     </div>
 
-    <!-- Right: Terminal card -->
-    <div class="bg-bg-2 border border-border rounded-[14px] overflow-hidden font-mono text-[13px] fade-up"
-         style="box-shadow: 0 40px 80px -40px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.02) inset; transition-delay: 300ms">
-      <div class="flex items-center gap-2 px-3.5 py-3 border-b border-border text-ink-mute text-xs">
-        <span class="w-[11px] h-[11px] rounded-full bg-[#3a3d44]"></span>
-        <span class="w-[11px] h-[11px] rounded-full bg-[#3a3d44]"></span>
-        <span class="w-[11px] h-[11px] rounded-full bg-[#3a3d44]"></span>
-        <span class="ml-auto font-mono text-[11px] tracking-[0.05em]">~/juaini — zsh</span>
-      </div>
-      <div class="p-5 leading-[1.75]">
-        <div>
-          <span class="text-green">$</span>
-          <span class="text-ink" id="terminal-cmd"></span><span class="caret" id="terminal-cursor"></span>
+    <!-- Right: Avatar scene -->
+    <div class="scene fade-up" aria-hidden="true" style="transition-delay: 300ms">
+      <div class="avatar-wrap">
+        <div class="avatar-frame">
+          <img src="/juaini-avatar.jpeg" alt="Juaini" />
         </div>
-        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ name:</span>       <span class="text-accent-soft">"Juaini"</span></div>
-        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ role:</span>       <span class="text-accent-soft">"Software Engineer"</span></div>
-        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ location:</span>   <span class="text-accent-soft">"Kalimantan Selatan, ID"</span></div>
-        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ years:</span>      <span class="text-green">3</span></div>
-        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ stack:</span>      [<span class="text-violet">Java</span>, <span class="text-violet">Spring</span>, <span class="text-violet">Node</span>, <span class="text-violet">React</span>]</div>
-        <div class="terminal-line" style="opacity:0"><span class="text-ink-mute">→ status:</span>     <span class="text-green">OPEN_TO_WORK</span> <span class="caret"></span></div>
+        <span class="avatar-corner tl"></span>
+        <span class="avatar-corner tr"></span>
+        <span class="avatar-corner bl"></span>
+        <span class="avatar-corner br"></span>
+        <div class="avatar-info">
+          <span class="name">@juaini · Software Engineer</span>
+          <span class="live">Online</span>
+        </div>
       </div>
+
+      <div class="float-chip c1"><span class="d"></span>Spring Boot</div>
+      <div class="float-chip c2"><span class="d"></span>AWS λ</div>
+      <div class="float-chip c3"><span class="d"></span>PostgreSQL</div>
+      <div class="float-chip c4"><span class="d"></span>Redis</div>
     </div>
 
   </div>
 </header>
 
 <script>
-  const CMD = 'whoami --verbose';
-  const cmdEl = document.getElementById('terminal-cmd') as HTMLElement;
-  const cursorEl = document.getElementById('terminal-cursor') as HTMLElement;
-  const lines = document.querySelectorAll<HTMLElement>('.terminal-line');
+  function typeOnce(el: HTMLElement, text: string, opts: { speed?: number; onDone?: () => void } = {}) {
+    const speed = opts.speed ?? 55;
+    let i = 0;
+    el.textContent = '';
+    const tick = () => {
+      if (i <= text.length) {
+        el.textContent = text.slice(0, i++);
+        setTimeout(tick, speed + Math.random() * 30);
+      } else if (opts.onDone) opts.onDone();
+    };
+    tick();
+  }
+
+  function typeLoop(el: HTMLElement, words: string[], opts: { typeSpeed?: number; eraseSpeed?: number; hold?: number; between?: number } = {}) {
+    const { typeSpeed = 70, eraseSpeed = 35, hold = 1800, between = 400 } = opts;
+    let wi = 0;
+    const next = () => {
+      const word = words[wi % words.length];
+      let i = 0;
+      const typing = () => {
+        if (i <= word.length) {
+          el.textContent = word.slice(0, i++);
+          setTimeout(typing, typeSpeed + Math.random() * 40);
+        } else {
+          setTimeout(erase, hold);
+        }
+      };
+      const erase = () => {
+        let j = word.length;
+        const tick = () => {
+          if (j >= 0) {
+            el.textContent = word.slice(0, j--);
+            setTimeout(tick, eraseSpeed);
+          } else {
+            wi++;
+            setTimeout(next, between);
+          }
+        };
+        tick();
+      };
+      typing();
+    };
+    next();
+  }
+
+  const eyebrowEl = document.getElementById('eyebrow-text') as HTMLElement;
+  const eyebrowCaret = document.getElementById('eyebrow-caret') as HTMLElement;
+  const roleEl = document.getElementById('role-text') as HTMLElement;
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    cmdEl.textContent = CMD;
-    lines.forEach((l) => { l.style.opacity = '1'; });
-    cursorEl.style.display = 'none';
+    eyebrowEl.textContent = 'Software Engineer · Available for work';
+    eyebrowCaret.style.display = 'none';
+    roleEl.textContent = 'Backend Engineer @ PT Rivolta';
   } else {
-    let i = 0;
-    function typeCmd() {
-      if (i < CMD.length) {
-        cmdEl.textContent += CMD[i++];
-        setTimeout(typeCmd, 48);
-      } else {
-        cursorEl.style.display = 'none';
-        lines.forEach((line, idx) => {
-          setTimeout(() => {
-            line.style.transition = 'opacity 0.25s ease';
-            line.style.opacity = '1';
-          }, idx * 160);
-        });
+    typeOnce(eyebrowEl, 'Software Engineer · Available for work', {
+      speed: 35,
+      onDone: () => {
+        setTimeout(() => { eyebrowCaret.style.opacity = '.35'; }, 1200);
       }
-    }
-    setTimeout(typeCmd, 900);
+    });
+
+    typeLoop(roleEl, [
+      'Backend Engineer @ PT Rivolta',
+      'Spring Boot specialist',
+      'Microservices architect',
+      'AWS Lambda · event-driven',
+      'React Native · mobile dev',
+      'Available for new projects',
+    ], { typeSpeed: 60, eraseSpeed: 30, hold: 1600, between: 350 });
   }
 </script>

@@ -66,9 +66,14 @@
   "project.03.num": "/ 03 — FINTECH",
   "project.03.title": "Loan Pre-Closure Calculation Engine",
   "project.03.desc": "Support-developer contributions to a financial services monolith. Implemented complex loan pre-closure calculation modules and secure RESTful APIs for sensitive transaction processing.",
+  "contact.eyebrow": "Currently accepting projects · Q2 2026",
   "contact.heading": "Got a backend that needs a <em>steady hand?</em>",
-  "contact.sub": "I'm open to freelance engagements, full-time roles, and contract work — backend systems, mobile apps, or web frontends. Especially anything involving Spring Boot, Node.js, React Native, or systems that need a strong architectural foundation.",
+  "contact.sub": "I'm open to <strong>freelance engagements</strong>, <strong>full-time roles</strong>, and <strong>contract work</strong> — especially anything involving Spring Boot, Node microservices, mobile apps, or legacy systems that need straightening out.",
   "contact.cta": "juaini742@gmail.com",
+  "contact.mail.label": "Best way to reach me",
+  "contact.avail.status": "Available",
+  "contact.avail.from": "from May 2026",
+  "contact.avail.remote": "Remote-friendly",
   "footer.copy": "© 2026 Juaini · Hulu Sungai Tengah, ID",
   "footer.tagline": "Built with Spring Boot energy ☕"
 }
