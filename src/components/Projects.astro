@@ -11,38 +11,57 @@ import { projects } from '../data/projects';
         <div class="sec-kicker">
           <span class="bar"></span>
           <span data-i18n="projects.kicker.label">Selected work</span>
-          <span class="meta">// 3 case studies</span>
+          <span class="meta">// 2 current builds + 3 case studies</span>
         </div>
         <h2 class="sec-title" data-i18n="projects.title">Systems in <em>production</em>,<br/>not side projects.</h2>
       </div>
       <div class="sec-side">
-        <div class="sec-stat"><span class="pulse"></span>Live in <b>3 domains</b></div>
+        <div class="sec-stat"><span class="pulse"></span><span data-i18n="projects.stat">Active builds in <b>2 stacks</b></span></div>
         <p class="sec-desc" data-i18n="projects.desc">A sample of architectures I've designed or contributed to — from monoliths to event-driven microservices.</p>
       </div>
     </div>
     <div class="sec-rule"></div>
 
     <div class="grid gap-6">
-      {projects.map(({ i18nPrefix, tech, layout, diagramHtml }, i) => (
+      {projects.map(({ i18nPrefix, tech, layout, diagramHtml, statusI18nKey, demoI18nKey, links }, i) => (
         <article
-          class={`grid grid-cols-1 ${layout === 'left' ? 'md:grid-cols-[1fr_1.3fr]' : 'md:grid-cols-[1.3fr_1fr]'} gap-8 md:gap-12 items-center p-6 md:p-10 border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors fade-up`}
+          class={`project-card grid grid-cols-1 ${layout === 'left' ? 'md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.25fr)]' : 'md:grid-cols-[minmax(0,1.25fr)_minmax(0,0.95fr)]'} items-center border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors fade-up`}
           style={`transition-delay: ${i * 150}ms`}
         >
-          {layout !== 'left' && <div class="overflow-x-auto min-w-0"><div set:html={diagramHtml} /></div>}
-          <div>
+          {layout !== 'left' && <div class="project-visual min-w-0 order-2 md:order-none"><div set:html={diagramHtml} /></div>}
+          <div class="project-copy order-1 md:order-none">
             <div class="font-mono text-[12px] text-accent tracking-[0.15em] mb-3.5"
                  data-i18n={`${i18nPrefix}.num`}></div>
+            {statusI18nKey && (
+              <div class="project-status" data-i18n={statusI18nKey}></div>
+            )}
             <h3 class="font-serif text-[34px] font-normal leading-[1.1] m-0 mb-3.5 tracking-[-0.01em]"
                 data-i18n={`${i18nPrefix}.title`}></h3>
             <p class="text-ink-dim m-0 mb-[18px] text-[15px] leading-[1.6]"
                data-i18n={`${i18nPrefix}.desc`}></p>
-            <div class="flex gap-[18px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.1em]">
+            {demoI18nKey && (
+              <p class="project-demo-note" data-i18n={demoI18nKey}></p>
+            )}
+            <div class="project-tech flex gap-[18px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.1em]">
               {tech.map((t) => (
                 <span><b class="text-ink font-medium">{t}</b></span>
               ))}
             </div>
+            {links && links.length > 0 && (
+              <div class="project-links">
+                {links.map((link) => (
+                  <a
+                    class={`project-link ${link.tone === 'primary' ? 'primary' : ''}`}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-i18n={link.labelI18n}
+                  ></a>
+                ))}
+              </div>
+            )}
           </div>
-          {layout === 'left' && <div class="overflow-x-auto min-w-0"><div set:html={diagramHtml} /></div>}
+          {layout === 'left' && <div class="project-visual min-w-0 order-2 md:order-none"><div set:html={diagramHtml} /></div>}
         </article>
       ))}
     </div>

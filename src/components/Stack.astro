@@ -2,15 +2,15 @@
 // src/components/Stack.astro
 const cells = [
   {
-    key: 'languages', label: 'Languages', desc: '// daily drivers', count: '6', countLabel: 'langs',
+    key: 'languages', label: 'Languages', desc: '// daily drivers', count: '7', countLabel: 'langs',
     svgPath: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
-    primary: ['Java', 'TypeScript'],
+    primary: ['Java', 'TypeScript', 'PHP'],
     items: ['JavaScript', 'Go', 'Rust', 'Kotlin'],
   },
   {
-    key: 'backend', label: 'Backend', desc: '// where I live', count: '8', countLabel: 'frameworks',
+    key: 'backend', label: 'Backend', desc: '// where I live', count: '9', countLabel: 'frameworks',
     svgPath: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>',
-    primary: ['Spring Boot', 'NestJS'],
+    primary: ['Spring Boot', 'NestJS', 'Laravel'],
     items: ['Jersey', 'Express', 'Axum', 'Gin', 'Maven', 'Gradle'],
   },
   {
@@ -60,7 +60,7 @@ const cells = [
         <div class="sec-kicker">
           <span class="bar"></span>
           <span data-i18n="stack.kicker.label">Toolbox</span>
-          <span class="meta">// 30+ tools</span>
+          <span class="meta">// 32+ tools</span>
         </div>
         <h2 class="sec-title" data-i18n="stack.title">The stack I reach for<br/>on <em>day one.</em></h2>
       </div>
