@@ -3,7 +3,30 @@
 interface Props {
   title?: string;
 }
-const { title = 'Juaini — Software Engineer' } = Astro.props;
+
+const { title = 'Juaini — Software Engineer | Backend, Mobile & Applied AI' } = Astro.props;
+const description = 'Software Engineer building production backend systems, cross-platform mobile apps, modern web products, and reliable AI-assisted workflows.';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Juaini',
+  url: 'https://portfolio-juaini.vercel.app',
+  jobTitle: 'Software Engineer',
+  sameAs: [
+    'https://www.linkedin.com/in/juaini-i',
+    'https://github.com/Juaini00',
+  ],
+  knowsAbout: [
+    'Backend Engineering',
+    'Applied AI',
+    'LLM Applications',
+    'AI Guardrails',
+    'Vector Retrieval',
+    'Spring Boot',
+    'Rust',
+    'PostgreSQL',
+  ],
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -11,21 +34,22 @@ const { title = 'Juaini — Software Engineer' } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta name="description" content="Juaini — Software Engineer specializing in backend systems, mobile apps, and web frontends. Spring Boot, Node.js, React Native, Kotlin Multiplatform. Available for freelance and full-time roles." />
+    <meta name="description" content={description} />
     <meta name="author" content="Juaini" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://portfolio-juaini.vercel.app" />
-    <meta property="og:title" content="Juaini — Software Engineer" />
-    <meta property="og:description" content="Backend systems, mobile apps, and web frontends. Spring Boot · Node.js · React Native · Kotlin Multiplatform. Available for freelance and full-time roles." />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Juaini — Software Engineer" />
-    <meta name="twitter:description" content="Backend systems, mobile apps, and web frontends. Spring Boot · Node.js · React Native · Kotlin Multiplatform." />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
 
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

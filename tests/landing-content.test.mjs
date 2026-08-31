@@ -5,6 +5,9 @@ import test from 'node:test';
 const projectsSource = await readFile(new URL('../src/data/projects.ts', import.meta.url), 'utf8');
 const projectsComponent = await readFile(new URL('../src/components/Projects.astro', import.meta.url), 'utf8');
 const stackSource = await readFile(new URL('../src/components/Stack.astro', import.meta.url), 'utf8');
+const aiSource = await readFile(new URL('../src/components/AppliedAI.astro', import.meta.url), 'utf8');
+const heroSource = await readFile(new URL('../src/components/Hero.astro', import.meta.url), 'utf8');
+const layoutSource = await readFile(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
 const cssSource = await readFile(new URL('../src/styles/global.css', import.meta.url), 'utf8');
 const id = JSON.parse(await readFile(new URL('../src/i18n/id.json', import.meta.url), 'utf8'));
 const en = JSON.parse(await readFile(new URL('../src/i18n/en.json', import.meta.url), 'utf8'));
@@ -78,4 +81,39 @@ test('stack includes PHP and Laravel with updated counts', () => {
   assert.match(stackSource, /primary:\s*\['Spring Boot', 'NestJS', 'Laravel'\]/);
   assert.match(stackSource, /key: 'languages'[\s\S]*count: '7'/);
   assert.match(stackSource, /key: 'backend'[\s\S]*count: '9'/);
+});
+
+test('applied AI positioning is visible and backed by concrete system boundaries', () => {
+  assert.match(en['hero.eyebrow'], /Backend, Mobile, Web & Applied AI/);
+  assert.match(layoutSource, /Software Engineer \| Backend, Mobile & Applied AI/);
+  assert.match(aiSource, /fail-closed/);
+  assert.match(en['ai.principle'], /Policy validates/);
+  assert.match(id['ai.principle'], /Policy memvalidasi/);
+  assert.match(en['ai.deterministic.desc'], /AI never writes SQL/);
+  assert.match(id['ai.deterministic.desc'], /AI tidak pernah menulis SQL/);
+});
+
+test('AI claims use evidence exposed by the Fineract reporting project', () => {
+  assert.equal(en['stats.cert.num'], '25');
+  assert.equal(id['stats.cert.num'], '25');
+  assert.match(en['project.01.fact1'], /25 approved capabilities/);
+  assert.match(id['project.01.fact1'], /25 capability/);
+  assert.match(en['project.01.fact2'], /Voyage embeddings \+ lexical fallback/);
+  assert.match(stackSource, /key: 'ai'/);
+  assert.match(stackSource, /Voyage Embeddings/);
+  assert.match(stackSource, /Policy Guardrails/);
+});
+
+test('AI project status does not contain a stale hard-coded update month', () => {
+  assert.doesNotMatch(en['project.01.status'], /2026|Aug/);
+  assert.doesNotMatch(id['project.01.status'], /2026|Agu/);
+});
+
+test('AI complements rather than replaces the broader software engineering position', () => {
+  assert.match(en['hero.sub'], /backend systems/);
+  assert.match(en['hero.sub'], /mobile and web products/);
+  assert.match(en['hero.sub'], /apply AI/);
+  assert.match(heroSource, /@juaini · Software Engineer/);
+  assert.doesNotMatch(layoutSource, /jobTitle: '.*AI Engineer'/);
+  assert.match(en['contact.sub'], /backend systems, mobile and web products/);
 });

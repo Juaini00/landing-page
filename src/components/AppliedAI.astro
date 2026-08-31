@@ -1,0 +1,87 @@
+---
+const principles = [
+  {
+    key: 'grounded',
+    number: '01',
+    fallbackTitle: 'Grounded',
+    fallbackDescription: 'Semantic retrieval uses a project-owned capability catalog, Voyage embeddings when configured, and lexical fallback.',
+  },
+  {
+    key: 'constrained',
+    number: '02',
+    fallbackTitle: 'Constrained',
+    fallbackDescription: 'Structured planning and policy checks restrict the model to known reporting capabilities and authorized data scopes.',
+  },
+  {
+    key: 'deterministic',
+    number: '03',
+    fallbackTitle: 'Deterministic',
+    fallbackDescription: 'Only approved, parameterized, read-only SQL is executed. The AI never writes SQL or directly accesses the database.',
+  },
+  {
+    key: 'observable',
+    number: '04',
+    fallbackTitle: 'Observable',
+    fallbackDescription: 'Jobs, checkpoints, events, audit data, tracing, and durable PostgreSQL state make decisions inspectable and recoverable.',
+  },
+];
+
+const flow = [
+  ['input', 'Natural language'],
+  ['retrieve', 'Retrieve'],
+  ['plan', 'Plan'],
+  ['guard', 'Policy gate'],
+  ['execute', 'Execute'],
+  ['output', 'Audited result'],
+];
+---
+<section class="py-[120px] border-b border-border" id="ai">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div class="sec-head-mid">
+        <div class="sec-kicker">
+          <span class="bar"></span>
+          <span data-i18n="ai.kicker.label">Applied AI</span>
+          <span class="meta">// reliable by design</span>
+        </div>
+        <h2 class="sec-title" data-i18n="ai.title">AI that can explain its <em>boundaries.</em></h2>
+      </div>
+      <div class="sec-side">
+        <div class="sec-stat"><span class="pulse"></span><span data-i18n="ai.stat">25 approved <b>reporting capabilities</b></span></div>
+        <p class="sec-desc" data-i18n="ai.desc">I treat the model as one component in a controlled system — useful for interpretation and planning, never trusted with unrestricted execution.</p>
+      </div>
+    </div>
+    <div class="sec-rule"></div>
+
+    <div class="rounded-2xl border border-border bg-bg-2 overflow-hidden fade-up">
+      <div class="px-5 md:px-8 py-4 border-b border-border flex items-center justify-between gap-4">
+        <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-mute">fineract_ai_reports.workflow</span>
+        <span class="font-mono text-[11px] text-green">● fail-closed</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-px bg-border">
+        {flow.map(([key, fallback], index) => (
+          <div class="relative bg-bg-2 px-4 py-6 min-h-[96px] flex flex-col justify-between gap-4">
+            <span class="font-mono text-[10px] text-accent">{String(index + 1).padStart(2, '0')}</span>
+            <strong class="text-[13px] font-medium" data-i18n={`ai.flow.${key}`}>{fallback}</strong>
+            {index < flow.length - 1 && <span class="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 z-10 w-4 h-4 rounded-full border border-border-2 bg-bg text-center leading-[13px] text-[10px] text-ink-mute">→</span>}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border rounded-2xl overflow-hidden mt-6 fade-up" style="transition-delay: 120ms">
+      {principles.map(({ key, number, fallbackTitle, fallbackDescription }) => (
+        <article class="bg-bg px-6 md:px-8 py-8 min-h-[210px]">
+          <div class="font-mono text-[11px] text-accent mb-8">/{number}</div>
+          <h3 class="font-serif text-[28px] font-normal mb-3" data-i18n={`ai.${key}.title`}>{fallbackTitle}</h3>
+          <p class="text-ink-dim text-[15px] leading-[1.65] m-0" data-i18n={`ai.${key}.desc`}>{fallbackDescription}</p>
+        </article>
+      ))}
+    </div>
+
+    <p class="font-serif italic text-[clamp(28px,4vw,48px)] leading-[1.1] text-center text-ink mt-14 mb-0 fade-up" style="transition-delay: 220ms" data-i18n="ai.principle">
+      The model plans. Policy validates. Deterministic code executes.
+    </p>
+  </div>
+</section>

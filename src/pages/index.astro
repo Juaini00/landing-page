@@ -6,6 +6,7 @@ import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import Stats from '../components/Stats.astro';
 import Experience from '../components/Experience.astro';
+import AppliedAI from '../components/AppliedAI.astro';
 import Stack from '../components/Stack.astro';
 import Projects from '../components/Projects.astro';
 import Contact from '../components/Contact.astro';
@@ -24,6 +25,7 @@ const translationsJson = JSON.stringify(translations);
     <Hero />
     <Stats />
     <Experience />
+    <AppliedAI />
     <Stack />
     <Projects />
     <Contact />
@@ -40,6 +42,7 @@ const translationsJson = JSON.stringify(translations);
         const key = el.dataset.i18n;
         if (t[key] !== undefined) el.innerHTML = t[key];
       });
+      window.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
     }
 
     function updateToggleUI(lang) {
@@ -96,7 +99,7 @@ const translationsJson = JSON.stringify(translations);
   </script>
 
   <script>
-    const sections = ['work', 'stack', 'projects', 'contact'];
+    const sections = ['work', 'ai', 'stack', 'projects', 'contact'];
     const navLinks = Object.fromEntries(
       sections.map((id) => [id, document.querySelector(`nav a[href="#${id}"]`)])
     );

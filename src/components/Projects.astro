@@ -6,14 +6,14 @@ import { projects } from '../data/projects';
   <div class="wrap">
 
     <div class="sec-head">
-      <div class="sec-num">03</div>
+      <div class="sec-num">04</div>
       <div class="sec-head-mid">
         <div class="sec-kicker">
           <span class="bar"></span>
           <span data-i18n="projects.kicker.label">Selected work</span>
           <span class="meta">// 2 current builds + 3 case studies</span>
         </div>
-        <h2 class="sec-title" data-i18n="projects.title">Systems in <em>production</em>,<br/>not side projects.</h2>
+        <h2 class="sec-title" data-i18n="projects.title">Current builds, backed by<br/><em>production judgment.</em></h2>
       </div>
       <div class="sec-side">
         <div class="sec-stat"><span class="pulse"></span><span data-i18n="projects.stat">Active builds in <b>2 stacks</b></span></div>
@@ -23,7 +23,7 @@ import { projects } from '../data/projects';
     <div class="sec-rule"></div>
 
     <div class="grid gap-6">
-      {projects.map(({ i18nPrefix, tech, layout, diagramHtml, statusI18nKey, demoI18nKey, links }, i) => (
+      {projects.map(({ i18nPrefix, tech, layout, diagramHtml, statusI18nKey, demoI18nKey, principleI18nKey, factI18nKeys, links }, i) => (
         <article
           class={`project-card grid grid-cols-1 ${layout === 'left' ? 'md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.25fr)]' : 'md:grid-cols-[minmax(0,1.25fr)_minmax(0,0.95fr)]'} items-center border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors fade-up`}
           style={`transition-delay: ${i * 150}ms`}
@@ -39,6 +39,16 @@ import { projects } from '../data/projects';
                 data-i18n={`${i18nPrefix}.title`}></h3>
             <p class="text-ink-dim m-0 mb-[18px] text-[15px] leading-[1.6]"
                data-i18n={`${i18nPrefix}.desc`}></p>
+            {principleI18nKey && (
+              <p class="font-mono text-[11px] uppercase tracking-[0.08em] text-accent border-l border-accent pl-3 mb-[18px]" data-i18n={principleI18nKey}></p>
+            )}
+            {factI18nKeys && factI18nKeys.length > 0 && (
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 list-none p-0 mb-5">
+                {factI18nKeys.map((key) => (
+                  <li class="text-[12px] leading-[1.4] text-ink-dim before:content-['✓'] before:text-green before:mr-2" data-i18n={key}></li>
+                ))}
+              </ul>
+            )}
             {demoI18nKey && (
               <p class="project-demo-note" data-i18n={demoI18nKey}></p>
             )}
