@@ -13,15 +13,24 @@ export interface Project {
   diagramHtml: string;
   statusI18nKey?: string;
   demoI18nKey?: string;
+  principleI18nKey?: string;
+  factI18nKeys?: string[];
   links?: ProjectLink[];
 }
 
 export const projects: Project[] = [
   {
     i18nPrefix: 'project.01',
-    tech: ['Rust', 'PostgreSQL', 'Redis', 'pgvector'],
+    tech: ['Rust', 'LLM Planning', 'Voyage', 'pgvector'],
     layout: 'left',
     statusI18nKey: 'project.01.status',
+    principleI18nKey: 'project.01.principle',
+    factI18nKeys: [
+      'project.01.fact1',
+      'project.01.fact2',
+      'project.01.fact3',
+      'project.01.fact4',
+    ],
     links: [
       {
         href: 'https://github.com/Juaini00/fineract-ai-reports',

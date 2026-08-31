@@ -1,46 +1,60 @@
-# Astro Starter Kit: Basics
+# Juaini — Software Engineer
+
+Personal portfolio for [Juaini](https://www.linkedin.com/in/juaini-i), a software engineer with a strong backend foundation and hands-on experience across mobile, web, and applied AI.
+
+**Live site:** [portfolio-juaini.vercel.app](https://portfolio-juaini.vercel.app)
+
+## What the portfolio covers
+
+- Production backend experience across events, logistics, and financial services.
+- Applied AI engineering built around grounding, policy enforcement, deterministic execution, and observability.
+- A detailed case study of [Fineract AI Reports](https://github.com/Juaini00/fineract-ai-reports), a Rust natural-language reporting service where the model plans but never writes SQL.
+- Additional full-stack and enterprise system work.
+- English and Indonesian content with a persistent language preference.
+
+## Tech
+
+- [Astro](https://astro.build/) 6
+- [Tailwind CSS](https://tailwindcss.com/) 4
+- TypeScript
+- Node.js test runner
+
+The site is statically rendered. Client-side JavaScript is limited to language switching, progressive reveal effects, hero text motion, and active navigation state.
+
+## Local development
+
+Requires Node.js 22.12 or newer.
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The development server runs at `http://localhost:4321`.
 
-## 🚀 Project Structure
+## Verification
 
-Inside of your Astro project, you'll see the following folders and files:
+```sh
+npm test
+npm run build
+```
+
+`npm test` validates key portfolio claims, project links, bilingual content, and responsive project structure. `npm run build` performs the production Astro build.
+
+## Project structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+src/
+├── components/   # Portfolio sections
+├── data/         # Structured project case studies
+├── i18n/         # English and Indonesian content
+├── layouts/      # Metadata and page shell
+├── pages/        # Route entry points
+└── styles/       # Global design system
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Contact
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [LinkedIn](https://www.linkedin.com/in/juaini-i)
+- [GitHub](https://github.com/Juaini00)
+- Email: [juaini742@gmail.com](mailto:juaini742@gmail.com)

@@ -1,5 +1,30 @@
 ---
 // src/components/Hero.astro
+import en from '../i18n/en.json';
+import id from '../i18n/id.json';
+
+const heroMotionJson = JSON.stringify({
+  en: {
+    eyebrow: en['hero.eyebrow'],
+    roles: [
+      en['hero.role.1'],
+      en['hero.role.2'],
+      en['hero.role.3'],
+      en['hero.role.4'],
+      en['hero.role.5'],
+    ],
+  },
+  id: {
+    eyebrow: id['hero.eyebrow'],
+    roles: [
+      id['hero.role.1'],
+      id['hero.role.2'],
+      id['hero.role.3'],
+      id['hero.role.4'],
+      id['hero.role.5'],
+    ],
+  },
+});
 ---
 <header class="py-[80px_0_80px] relative">
   <div class="wrap hero-grid">
@@ -11,11 +36,9 @@
         <span id="eyebrow-text"></span><span class="type-caret" id="eyebrow-caret"></span>
       </div>
       <h1 class="font-serif font-normal text-[clamp(48px,8vw,104px)] leading-[.95] tracking-[-0.02em] m-0">
-        <span data-i18n="hero.h1.line1">Backend systems,</span><br/>
+        <span data-i18n="hero.h1.line1">Reliable software,</span><br/>
         <span data-i18n="hero.h1.line2">built to</span>
-        <em class="italic text-accent font-normal" data-i18n="hero.h1.em1">scale</em>
-        <span data-i18n="hero.h1.line3">&amp;</span><br/>
-        <em class="italic text-accent font-normal" data-i18n="hero.h1.em2">last.</em>
+        <em class="italic text-accent font-normal" data-i18n="hero.h1.em1">adapt.</em>
       </h1>
     </div>
 
@@ -35,9 +58,9 @@
         </div>
       </div>
       <div class="float-chip c1"><span class="d"></span>Spring Boot</div>
-      <div class="float-chip c2"><span class="d"></span>AWS λ</div>
-      <div class="float-chip c3"><span class="d"></span>PostgreSQL</div>
-      <div class="float-chip c4"><span class="d"></span>Redis</div>
+      <div class="float-chip c2"><span class="d"></span>React Native</div>
+      <div class="float-chip c3"><span class="d"></span>Applied AI</div>
+      <div class="float-chip c4"><span class="d"></span>AWS λ</div>
     </div>
 
     <!-- Block 3: role-line + paragraph + CTA (mobile: bottom; desktop: body area) -->
@@ -51,8 +74,8 @@
       <p class="max-w-[540px] text-ink-dim text-lg leading-[1.55] mb-10"
          data-i18n="hero.sub">
         I'm <strong class="text-ink font-medium">Juaini</strong> — a software engineer with <strong class="text-ink font-medium">3+ years</strong>
-        shipping production Java &amp; Node.js services. I design clean architectures,
-        harden APIs, and ship microservices that quietly run the business.
+        shipping production backend systems. I also build mobile and web products, and apply AI
+        where it creates real value without compromising reliability.
       </p>
       <div class="flex gap-3.5 flex-wrap">
         <a href="mailto:juaini742@gmail.com"
@@ -70,75 +93,57 @@
   </div>
 </header>
 
-<script>
-  function typeOnce(el: HTMLElement, text: string, opts: { speed?: number; onDone?: () => void } = {}) {
-    const speed = opts.speed ?? 55;
-    let i = 0;
+<script define:vars={{ heroMotionJson }}>
+  const content = JSON.parse(heroMotionJson);
+  const eyebrowEl = document.getElementById('eyebrow-text');
+  const eyebrowCaret = document.getElementById('eyebrow-caret');
+  const roleEl = document.getElementById('role-text');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let animationGeneration = 0;
+
+  const wait = (duration) => new Promise((resolve) => setTimeout(resolve, duration));
+
+  async function typeText(el, text, speed, generation) {
     el.textContent = '';
-    const tick = () => {
-      if (i <= text.length) {
-        el.textContent = text.slice(0, i++);
-        setTimeout(tick, speed + Math.random() * 30);
-      } else if (opts.onDone) opts.onDone();
-    };
-    tick();
+    for (let i = 0; i <= text.length; i++) {
+      if (generation !== animationGeneration) return false;
+      el.textContent = text.slice(0, i);
+      await wait(speed);
+    }
+    return true;
   }
 
-  function typeLoop(el: HTMLElement, words: string[], opts: { typeSpeed?: number; eraseSpeed?: number; hold?: number; between?: number } = {}) {
-    const { typeSpeed = 70, eraseSpeed = 35, hold = 1800, between = 400 } = opts;
-    let wi = 0;
-    const next = () => {
-      const word = words[wi % words.length];
-      let i = 0;
-      const typing = () => {
-        if (i <= word.length) {
-          el.textContent = word.slice(0, i++);
-          setTimeout(typing, typeSpeed + Math.random() * 40);
-        } else {
-          setTimeout(erase, hold);
-        }
-      };
-      const erase = () => {
-        let j = word.length;
-        const tick = () => {
-          if (j >= 0) {
-            el.textContent = word.slice(0, j--);
-            setTimeout(tick, eraseSpeed);
-          } else {
-            wi++;
-            setTimeout(next, between);
-          }
-        };
-        tick();
-      };
-      typing();
-    };
-    next();
-  }
+  async function animateHero(lang) {
+    const generation = ++animationGeneration;
+    const localized = content[lang] ?? content.en;
 
-  const eyebrowEl = document.getElementById('eyebrow-text') as HTMLElement;
-  const eyebrowCaret = document.getElementById('eyebrow-caret') as HTMLElement;
-  const roleEl = document.getElementById('role-text') as HTMLElement;
+    if (reducedMotion) {
+      eyebrowEl.textContent = localized.eyebrow;
+      eyebrowCaret.style.display = 'none';
+      roleEl.textContent = localized.roles[0];
+      return;
+    }
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    eyebrowEl.textContent = 'Software Engineer · Available for work';
-    eyebrowCaret.style.display = 'none';
-    roleEl.textContent = 'Backend Engineer @ PT Rivolta';
-  } else {
-    typeOnce(eyebrowEl, 'Software Engineer · Available for work', {
-      speed: 35,
-      onDone: () => {
-        setTimeout(() => { eyebrowCaret.style.opacity = '.35'; }, 1200);
+    eyebrowCaret.style.display = '';
+    if (!(await typeText(eyebrowEl, localized.eyebrow, 35, generation))) return;
+    eyebrowCaret.style.opacity = '.35';
+
+    let wordIndex = 0;
+    while (generation === animationGeneration) {
+      const word = localized.roles[wordIndex % localized.roles.length];
+      if (!(await typeText(roleEl, word, 55, generation))) return;
+      await wait(1600);
+      if (generation !== animationGeneration) return;
+      for (let i = word.length; i >= 0; i--) {
+        if (generation !== animationGeneration) return;
+        roleEl.textContent = word.slice(0, i);
+        await wait(30);
       }
-    });
-
-    typeLoop(roleEl, [
-      'Backend Engineer @ PT Rivolta',
-      'Spring Boot specialist',
-      'Microservices architect',
-      'AWS Lambda · event-driven',
-      'React Native · mobile dev',
-      'Available for new projects',
-    ], { typeSpeed: 60, eraseSpeed: 30, hold: 1600, between: 350 });
+      await wait(300);
+      wordIndex++;
+    }
   }
+
+  window.addEventListener('languagechange', (event) => animateHero(event.detail.lang));
+  animateHero(localStorage.getItem('lang') ?? 'en');
 </script>

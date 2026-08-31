@@ -44,6 +44,12 @@ const cells = [
     items: ['Jest', 'Playwright', 'Swagger', 'Postman'],
   },
   {
+    key: 'ai', label: 'AI Engineering', desc: '// constrained + observable', count: '8', countLabel: 'capabilities',
+    svgPath: '<path d="M9.5 3a2.5 2.5 0 0 0-2.45 2H6a3 3 0 0 0-3 3v1.05A2.5 2.5 0 0 0 3 14v1a3 3 0 0 0 3 3h1.05A2.5 2.5 0 0 0 12 17.5v-12A2.5 2.5 0 0 0 9.5 3Z"/><path d="M14.5 3A2.5 2.5 0 0 1 17 5h1a3 3 0 0 1 3 3v1.05a2.5 2.5 0 0 1 0 4.9V15a3 3 0 0 1-3 3h-1a2.5 2.5 0 0 1-5-0.5v-12A2.5 2.5 0 0 1 14.5 3Z"/>',
+    primary: ['LLM Planning', 'Vector Retrieval'],
+    items: ['Voyage Embeddings', 'pgvector', 'Policy Guardrails', 'Structured Outputs', 'Fail-closed Routing', 'Tracing'],
+  },
+  {
     key: 'practices', label: 'Practices', desc: '// how I ship', count: '7', countLabel: 'habits',
     svgPath: '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>',
     primary: ['Clean Architecture', 'TDD'],
@@ -55,23 +61,23 @@ const cells = [
   <div class="wrap">
 
     <div class="sec-head">
-      <div class="sec-num">02</div>
+      <div class="sec-num">03</div>
       <div class="sec-head-mid">
         <div class="sec-kicker">
           <span class="bar"></span>
           <span data-i18n="stack.kicker.label">Toolbox</span>
-          <span class="meta">// 32+ tools</span>
+          <span class="meta">// 50+ tools & capabilities</span>
         </div>
         <h2 class="sec-title" data-i18n="stack.title">The stack I reach for<br/>on <em>day one.</em></h2>
       </div>
       <div class="sec-side">
-        <div class="sec-stat">8 categories · <b>backend-first</b></div>
+        <div class="sec-stat">9 categories · <b>backend-first, product-wide</b></div>
         <p class="sec-desc" data-i18n="stack.desc">Backend is my home base — distributed systems, APIs, and microservices. Full-stack capable when the project calls for it.</p>
       </div>
     </div>
     <div class="sec-rule"></div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-border border border-border rounded-[14px] overflow-hidden">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border border border-border rounded-[14px] overflow-hidden">
       {cells.map(({ key, label, desc, count, countLabel, svgPath, primary, items }) => (
         <div class="stack-cell">
           <div class="stack-cell-head">
