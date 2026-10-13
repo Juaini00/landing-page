@@ -1,0 +1,9 @@
+---
+// Inline chrome icon from the build-time sprite (Tabler line icons).
+interface Props {
+  name: string;
+  class?: string;
+}
+const { name, class: cls = '' } = Astro.props;
+---
+<svg class={`ico ${cls}`} aria-hidden="true"><use href={`#i-${name}`} /></svg>

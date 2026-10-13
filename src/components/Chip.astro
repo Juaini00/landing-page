@@ -1,0 +1,14 @@
+---
+// Pill chip for a tech name: brand mark when the resolver matched, plain text otherwise.
+import Mark from './Mark.astro';
+
+interface Props {
+  name: string;
+  symbolId: string | null;
+  primary?: boolean;
+}
+const { name, symbolId, primary = false } = Astro.props;
+---
+<span class={`chip${primary ? ' primary' : ''}`}
+  >{symbolId && <Mark symbolId={symbolId} title={name} />}{name}</span
+>

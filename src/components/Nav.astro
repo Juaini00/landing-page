@@ -1,42 +1,32 @@
 ---
-// src/components/Nav.astro
+import type { CmsContent } from '../lib/cms';
+import { chrome } from '../lib/chrome';
+import Ico from './Ico.astro';
+interface Props { content: CmsContent; }
+const { content } = Astro.props;
+const en = content.translations.en;
+const links = [
+  { href: '#top', key: 'ext.nav.home', label: chrome.en['ext.nav.home'] },
+  ...['work', 'ai', 'stack', 'projects', 'contact'].map(section => ({ href: `#${section}`, key: `nav.${section}`, label: en[`nav.${section}`] })),
+];
 ---
-<nav class="sticky top-0 z-20 border-b border-border backdrop-blur-md"
-     style="background: color-mix(in oklab, var(--color-bg) 78%, transparent);">
-  <div class="wrap nav-inner flex items-center justify-between py-[18px] min-h-13">
-
-    <div class="flex items-center gap-[10px] font-mono text-sm tracking-[0.02em]">
-      <span class="inline-block w-[10px] h-[10px] rounded-sm bg-accent"
-            style="box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 25%, transparent);"></span>
-      juaini.dev
-    </div>
-
-    <div class="hidden md:flex gap-7 text-sm text-ink-dim">
-      <a href="#work"     data-i18n="nav.work"     class="hover:text-ink transition-colors">Work</a>
-      <a href="#ai"       data-i18n="nav.ai"       class="hover:text-ink transition-colors">Applied AI</a>
-      <a href="#stack"    data-i18n="nav.stack"    class="hover:text-ink transition-colors">Stack</a>
-      <a href="#projects" data-i18n="nav.projects" class="hover:text-ink transition-colors">Projects</a>
-      <a href="#contact"  data-i18n="nav.contact"  class="hover:text-ink transition-colors">Contact</a>
-    </div>
-
-    <div class="flex items-center gap-3">
-      <!-- Language toggle -->
-      <button
-        data-lang-toggle
-        aria-label="Toggle language"
-        class="font-mono text-xs text-ink-dim border border-border-2 rounded-full px-3 py-1.5 flex gap-1.5 hover:border-accent transition-colors"
-      >
-        <span data-lang-option="en">EN</span>
-        <span class="text-ink-mute">|</span>
-        <span data-lang-option="id">ID</span>
-      </button>
-
-      <a
-        href="#contact"
-        data-i18n="nav.cta"
-        class="font-mono text-sm px-3 py-1.5 border border-border-2 rounded-full hover:border-accent hover:text-accent transition-all"
-      >Let's talk →</a>
-    </div>
-
+<nav class="top" aria-label={chrome.en['ext.nav.primary']} data-i18n-aria-label="ext.nav.primary">
+  <a class="wordmark" href="#top">{content.settings.name}<b>.</b></a>
+  <div class="nav-capsule">
+    <span class="burger" aria-hidden="true"><Ico name="menu" /></span>
+    {links.map(link => <a href={link.href} aria-current={link.href === '#top' ? 'location' : undefined}><span data-i18n={link.key} set:html={link.label} /></a>)}
+    <span class="nav-indicator" aria-hidden="true"></span>
+    <span class="nav-dots" aria-hidden="true"><i></i><i></i><i></i></span>
   </div>
+  <button class="lang" type="button" aria-label="Switch to Indonesian"><b>EN</b> / ID</button>
+  <button class="menu-btn" type="button" aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false"><Ico name="menu" /><span data-i18n="ext.nav.menu">{chrome.en['ext.nav.menu']}</span></button>
 </nav>
+<nav class="mobile-nav-fallback" aria-label={chrome.en['ext.nav.primary']} data-i18n-aria-label="ext.nav.primary">
+  {links.map(link => <a href={link.href} aria-current={link.href === '#top' ? 'location' : undefined}><span data-i18n={link.key} set:html={link.label} /></a>)}
+</nav>
+<dialog class="mobile-menu" id="mobile-menu" aria-label={chrome.en['ext.nav.siteMenu']} data-i18n-aria-label="ext.nav.siteMenu">
+  <button class="close" type="button" autofocus aria-label={chrome.en['ext.nav.close']} data-i18n-aria-label="ext.nav.close">×</button>
+  <div class="sheet">
+    {links.map(link => <a href={link.href} aria-current={link.href === '#top' ? 'location' : undefined}><span data-i18n={link.key} set:html={link.label} /><Ico name="arrow-up-right" /></a>)}
+  </div>
+</dialog>

@@ -1,80 +1,134 @@
 ---
-// src/components/Projects.astro
-import { projects } from '../data/projects';
+import type { CmsContent } from '../lib/cms';
+import { chrome, factIcons, caseIcons } from '../lib/chrome';
+import Chip from './Chip.astro';
+import Ico from './Ico.astro';
+import Window from './Window.astro';
+
+interface Props {
+  content: CmsContent;
+  techIds: Map<string, string | null>;
+}
+const { content, techIds } = Astro.props;
+const en = content.translations.en;
+const builds = content.projects.slice(0, 2);
+const cases = content.projects.slice(2);
+const caseRange = cases.map(p => p.i18nPrefix.match(/(\d+)$/)?.[1]).filter(Boolean);
+const range = caseRange.length > 1 ? `${caseRange[0]} — ${caseRange.at(-1)}` : (caseRange[0] ?? '');
+const projTab = chrome.en['ext.proj.tab'].replace('{b}', String(builds.length)).replace('{c}', String(cases.length));
 ---
-<section class="py-[120px] border-b border-border" id="projects">
-  <div class="wrap">
-
-    <div class="sec-head">
-      <div class="sec-num">04</div>
-      <div class="sec-head-mid">
-        <div class="sec-kicker">
-          <span class="bar"></span>
-          <span data-i18n="projects.kicker.label">Selected work</span>
-          <span class="meta">// 2 current builds + 3 case studies</span>
-        </div>
-        <h2 class="sec-title" data-i18n="projects.title">Current builds, backed by<br/><em>production judgment.</em></h2>
-      </div>
-      <div class="sec-side">
-        <div class="sec-stat"><span class="pulse"></span><span data-i18n="projects.stat">Active builds in <b>2 stacks</b></span></div>
-        <p class="sec-desc" data-i18n="projects.desc">A sample of architectures I've designed or contributed to — from monoliths to event-driven microservices.</p>
-      </div>
+{builds.length === 0 && (
+  <Window id="projects" tabKey="ext.proj.tab" tabEn={projTab} fmt={{ b: '0', c: '0' }} variant="project-window">
+    <div class="pad">
+      <div class="sec-head"><h2 class="chrome display" data-i18n="projects.title" set:html={en['projects.title']} /></div>
+      <p data-i18n="ext.proj.empty">{chrome.en['ext.proj.empty']}</p>
     </div>
-    <div class="sec-rule"></div>
-
-    <div class="grid gap-6">
-      {projects.map(({ i18nPrefix, tech, layout, diagramHtml, statusI18nKey, demoI18nKey, principleI18nKey, factI18nKeys, links }, i) => (
-        <article
-          class={`project-card grid grid-cols-1 ${layout === 'left' ? 'md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.25fr)]' : 'md:grid-cols-[minmax(0,1.25fr)_minmax(0,0.95fr)]'} items-center border border-border rounded-2xl bg-gradient-to-b from-bg-2 to-bg hover:border-border-2 transition-colors fade-up`}
-          style={`transition-delay: ${i * 150}ms`}
-        >
-          {layout !== 'left' && <div class="project-visual min-w-0 order-2 md:order-none"><div set:html={diagramHtml} /></div>}
-          <div class="project-copy order-1 md:order-none">
-            <div class="font-mono text-[12px] text-accent tracking-[0.15em] mb-3.5"
-                 data-i18n={`${i18nPrefix}.num`}></div>
-            {statusI18nKey && (
-              <div class="project-status" data-i18n={statusI18nKey}></div>
-            )}
-            <h3 class="font-serif text-[34px] font-normal leading-[1.1] m-0 mb-3.5 tracking-[-0.01em]"
-                data-i18n={`${i18nPrefix}.title`}></h3>
-            <p class="text-ink-dim m-0 mb-[18px] text-[15px] leading-[1.6]"
-               data-i18n={`${i18nPrefix}.desc`}></p>
-            {principleI18nKey && (
-              <p class="font-mono text-[11px] uppercase tracking-[0.08em] text-accent border-l border-accent pl-3 mb-[18px]" data-i18n={principleI18nKey}></p>
-            )}
-            {factI18nKeys && factI18nKeys.length > 0 && (
-              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 list-none p-0 mb-5">
-                {factI18nKeys.map((key) => (
-                  <li class="text-[12px] leading-[1.4] text-ink-dim before:content-['✓'] before:text-green before:mr-2" data-i18n={key}></li>
-                ))}
-              </ul>
-            )}
-            {demoI18nKey && (
-              <p class="project-demo-note" data-i18n={demoI18nKey}></p>
-            )}
-            <div class="project-tech flex gap-[18px] font-mono text-[12px] text-ink-mute uppercase tracking-[0.1em]">
-              {tech.map((t) => (
-                <span><b class="text-ink font-medium">{t}</b></span>
-              ))}
+  </Window>
+)}
+{
+  builds.map((p, i) => {
+    const prefix = p.i18nPrefix;
+    const titleKey = `${prefix}.title`;
+    return (
+      <Window
+        id={i === 0 ? 'projects' : undefined}
+        tabKey={i === 0 ? 'ext.proj.tab' : `${prefix}.num`}
+        tabEn={i === 0 ? projTab : en[`${prefix}.num`]}
+        fmt={i === 0 ? { b: String(builds.length), c: String(cases.length) } : undefined}
+        variant="project-window"
+        bp={i === 0 ? '30% 20%' : '80% 75%'}
+      >
+        <div class="pad">
+          {i === 0 && (
+            <div class="sec-head">
+              <h2 class="chrome display" data-i18n="projects.title" set:html={en['projects.title']} />
+              <div class="side"><p data-i18n="projects.desc" set:html={en['projects.desc']} /></div>
             </div>
-            {links && links.length > 0 && (
-              <div class="project-links">
-                {links.map((link) => (
-                  <a
-                    class={`project-link ${link.tone === 'primary' ? 'primary' : ''}`}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-i18n={link.labelI18n}
-                  ></a>
-                ))}
-              </div>
-            )}
+          )}
+          <div class={`build${p.layout === 'left' ? ' diagram-left' : ''}`}>
+            <div class="bcopy" data-reveal="head">
+              <div class="bnum" data-i18n={`${prefix}.num`}>{en[`${prefix}.num`]}</div>
+              {p.statusI18nKey && (
+                <div class="status-pill"><span class="dot"></span><span data-i18n={p.statusI18nKey}>{en[p.statusI18nKey]}</span></div>
+              )}
+              <h3 class="chrome" data-i18n={titleKey} set:html={en[titleKey]} />
+              <p class="bdesc" data-i18n={`${prefix}.desc`} set:html={en[`${prefix}.desc`]} />
+              {p.principleI18nKey && <p class="bprinciple" data-i18n={p.principleI18nKey} set:html={en[p.principleI18nKey]} />}
+              {(p.factI18nKeys?.length ?? 0) > 0 && (
+                <div class="facts">
+                  {p.factI18nKeys?.map((key, n) => (
+                    <div class="fact"><Ico name={factIcons[n % factIcons.length]} /><span data-i18n={key} set:html={en[key]} /></div>
+                  ))}
+                </div>
+              )}
+              {p.demoI18nKey && <div class="demo-note glass" data-i18n={p.demoI18nKey} set:html={en[p.demoI18nKey]} />}
+              {(p.links?.length ?? 0) > 0 && (
+                <div class="blinks">
+                  {p.links?.map(link => (
+                    <a class={link.tone === 'primary' ? 'go' : 'ln'} href={link.href} target="_blank" rel="noopener noreferrer">
+                      <span data-i18n={link.labelI18n} set:html={en[link.labelI18n].replace(/\s*[↗→]\s*$/, '')} />
+                      {link.tone === 'primary' && <span class="arr"><Ico name="arrow-up-right" /></span>}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div class="glass bdiag" data-reveal><div class="diagram" set:html={p.diagramHtml} /></div>
           </div>
-          {layout === 'left' && <div class="project-visual min-w-0 order-2 md:order-none"><div set:html={diagramHtml} /></div>}
-        </article>
-      ))}
-    </div>
-
-  </div>
-</section>
+          {p.media?.map(media => (
+            <figure class="slot" data-reveal>
+              <div class="media" data-media>
+                {media.kind === 'video' ? (
+                  <video src={media.url} poster={media.posterUrl} muted playsinline controls preload="none" aria-label={media.alt ?? en[titleKey]} />
+                ) : (
+                  <img src={media.url} alt={media.alt ?? en[titleKey]} loading="lazy" />
+                )}
+                <p data-media-error data-i18n="ext.motion.mediaError" hidden>{chrome.en['ext.motion.mediaError']}</p>
+              </div>
+            </figure>
+          ))}
+          <div class="bdock" data-reveal>
+            <div class="bstats"><span data-i18n="projects.stat" set:html={en['projects.stat']} /></div>
+            <div class="bmarks">
+              {p.tech.map(name => {
+                const id = techIds.get(name);
+                return id ? <svg class="bmark" aria-label={name} role="img"><use href={`#${id}`} /></svg> : null;
+              })}
+              <span class="mono">{p.tech.join(' · ')}</span>
+            </div>
+          </div>
+        </div>
+      </Window>
+    );
+  })
+}
+{
+  cases.length > 0 && (
+    <Window tabKey="ext.proj.cases" tabEn={chrome.en['ext.proj.cases'].replace('{n}', range)} fmt={{ n: range }} variant="case-window" bp="50% 90%">
+      <div class="pad">
+        <div class="cases"><div class="cgrid">
+          {cases.map((p, i) => (
+            <article class="glass case" data-reveal>
+              <div class="chead"><div class="ic"><Ico name={caseIcons[i % caseIcons.length]} /></div><div class="lbl" data-i18n={`${p.i18nPrefix}.num`}>{en[`${p.i18nPrefix}.num`]}</div></div>
+              <h4 data-i18n={`${p.i18nPrefix}.title`} set:html={en[`${p.i18nPrefix}.title`]} />
+              <p data-i18n={`${p.i18nPrefix}.desc`} set:html={en[`${p.i18nPrefix}.desc`]} />
+              {p.statusI18nKey && <p data-i18n={p.statusI18nKey} set:html={en[p.statusI18nKey]} />}
+              {p.principleI18nKey && <p data-i18n={p.principleI18nKey} set:html={en[p.principleI18nKey]} />}
+              {p.factI18nKeys?.map(key => <p data-i18n={key} set:html={en[key]} />)}
+              {p.demoI18nKey && <p data-i18n={p.demoI18nKey} set:html={en[p.demoI18nKey]} />}
+              <div class="cchips">{p.tech.map((name, n) => <Chip name={name} symbolId={techIds.get(name) ?? null} primary={n === 0} />)}</div>
+              <div class="diagram" set:html={p.diagramHtml} />
+              {p.media?.map(media => (
+                <figure class="slot"><div class="media" data-media>
+                  {media.kind === 'video' ? <video src={media.url} poster={media.posterUrl} muted playsinline controls preload="none" aria-label={media.alt ?? en[`${p.i18nPrefix}.title`]} /> : <img src={media.url} alt={media.alt ?? en[`${p.i18nPrefix}.title`]} loading="lazy" />}
+                  <p data-media-error data-i18n="ext.motion.mediaError" hidden>{chrome.en['ext.motion.mediaError']}</p>
+                </div></figure>
+              ))}
+              {p.links?.map(link => <a class="ln" href={link.href} target="_blank" rel="noopener noreferrer"><span data-i18n={link.labelI18n} set:html={en[link.labelI18n].replace(/\s*[↗→]\s*$/, '')} /></a>)}
+            </article>
+          ))}
+        </div></div>
+      </div>
+    </Window>
+  )
+}

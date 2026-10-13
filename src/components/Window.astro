@@ -1,0 +1,26 @@
+---
+// E2 section window: #1a2129 rounded panel with blurred-avatar atmosphere,
+// directional scrim, sasirangan pattern layer, and the hanging top tab pill.
+interface Props {
+  id?: string;
+  tabKey: string;
+  tabEn: string;
+  variant?: string;
+  bp?: string;
+  fmt?: Record<string, string>;
+}
+const { id, tabKey, tabEn, variant = '', bp = '70% 30%', fmt } = Astro.props;
+---
+<section class="band" id={id}>
+  <div class={`win ${variant}`} style={`--bp:${bp}`}>
+    <div class="winfx">
+      <div class="atmo"></div>
+      <div class="scrim"></div>
+      <svg class="sas" aria-hidden="true"><rect width="100%" height="100%" fill="url(#sasP)" /></svg>
+    </div>
+    <div class="tabwrap">
+      <div class="tab pill-text" data-i18n={tabKey} data-fmt={fmt ? JSON.stringify(fmt) : undefined} set:html={tabEn} />
+    </div>
+    <slot />
+  </div>
+</section>

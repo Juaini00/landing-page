@@ -1,100 +1,105 @@
 ---
-// src/components/Experience.astro
+import type { CmsContent } from '../lib/cms';
+import { chrome, expRoleIcons } from '../lib/chrome';
+import Ico from './Ico.astro';
+import Window from './Window.astro';
+
+interface Props {
+  content: CmsContent;
+}
+const { content } = Astro.props;
+const en = content.translations.en;
+
+const roles = [
+  {
+    big: true,
+    icon: expRoleIcons[0],
+    labelKey: 'ext.role.current',
+    date: 'exp.rivolta.date',
+    dateExtra: 'exp.rivolta.present',
+    roleKey: 'exp.rivolta.role',
+    coKey: 'exp.rivolta.company',
+    bullets: ['exp.rivolta.b1', 'exp.rivolta.b2', 'exp.rivolta.b3', 'exp.rivolta.b4', 'exp.rivolta.b5'],
+    chips: [...new Set(content.projects.slice(2).flatMap(project => project.tech))],
+  },
+  {
+    big: false,
+    icon: expRoleIcons[1],
+    labelKey: 'ext.role.build',
+    date: 'exp.ai.date',
+    roleKey: 'exp.ai.role',
+    coKey: 'exp.ai.company',
+    bullets: ['exp.ai.b1', 'exp.ai.b2', 'exp.ai.b3'],
+    chips: content.projects[0]?.tech ?? [],
+  },
+  {
+    big: false,
+    icon: expRoleIcons[2],
+    labelKey: 'ext.role.foundation',
+    date: 'exp.be.date',
+    roleKey: 'exp.be.role',
+    coKey: 'exp.be.company',
+    bullets: ['exp.be.b1', 'exp.be.b2', 'exp.be.b3'],
+    chips: content.stack.find(category => category.key === 'backend')?.primary ?? [],
+  },
+];
+
 ---
-<section class="py-[120px] border-b border-border" id="work">
-  <div class="wrap">
-
-    <div class="sec-head">
-      <div class="sec-num">01</div>
-      <div class="sec-head-mid">
-        <div class="sec-kicker">
-          <span class="bar"></span>
-          <span data-i18n="exp.kicker.label">Experience</span>
-          <span class="meta">// 2023 → now</span>
-        </div>
-        <h2 class="sec-title" data-i18n="exp.title">Shipping software across<br/><em>enterprise</em> domains.</h2>
-      </div>
-      <div class="sec-side">
-        <div class="sec-stat"><span class="pulse"></span>Currently shipping at <b>PT Rivolta</b></div>
-        <p class="sec-desc" data-i18n="exp.desc">Production judgment across enterprise backend systems, now extended into constrained and auditable applied AI.</p>
-      </div>
+<Window id="work" tabKey="exp.kicker" tabEn={en['exp.kicker']} bp="30% 65%">
+  <div class="pad">
+  <div class="sec-head">
+    <h2 class="chrome display" data-i18n="exp.title" set:html={en['exp.title']} />
+    <div class="side">
+      <div class="status-pill"><span class="dot"></span><span data-i18n="exp.rivolta.company" set:html={en['exp.rivolta.company']} /></div>
+      <p data-i18n="exp.desc" set:html={en['exp.desc']} />
     </div>
-    <div class="sec-rule"></div>
-
-    <!-- Independent Applied AI -->
-    <article class="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-10 py-9 border-t border-border first:border-t-0 first:pt-0 fade-up" style="transition-delay: 100ms">
-      <div class="font-mono text-[13px] text-accent" data-i18n="exp.ai.date">Current independent build</div>
-      <div>
-        <h3 class="font-serif text-[28px] leading-[1.1] m-0 mb-1 font-normal" data-i18n="exp.ai.role">Software Engineer · Applied AI Project</h3>
-        <div class="text-ink-dim text-sm mb-[18px]" data-i18n="exp.ai.company">Fineract AI Reports · Open source</div>
-        <ul class="list-none p-0 m-0 grid gap-2.5">
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.ai.b1">Designed a constrained natural-language reporting workflow with <strong class="text-ink font-medium">semantic retrieval, LLM planning, policy enforcement</strong>, and structured response rendering.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.ai.b2">Built a project-owned catalog of <strong class="text-ink font-medium">25 approved capabilities and queries</strong>; the AI never generates or executes arbitrary SQL.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.ai.b3">Implemented production boundaries including read-only execution, office and PII scopes, JWT and API-key authorization, durable audit data, tracing, and fail-closed routing.</li>
-        </ul>
-        <div class="flex flex-wrap gap-1.5 mt-[18px]">
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Rust</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">LLM Planning</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Voyage Embeddings</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">pgvector</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">AI Guardrails</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Tracing</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- PT Rivolta -->
-    <article class="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-10 py-9 border-t border-border first:border-t-0 first:pt-0 fade-up" style="transition-delay: 150ms">
-      <div class="font-mono text-[13px] text-ink-dim">
-        <span data-i18n="exp.rivolta.date">Apr 2024</span> —
-        <span class="inline-flex items-center gap-1.5 text-green
-                     before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-green
-                     before:shadow-[0_0_0_3px_color-mix(in_oklab,var(--color-green)_30%,transparent)]"
-              data-i18n="exp.rivolta.present">Present</span>
-      </div>
-      <div>
-        <h3 class="font-serif text-[28px] leading-[1.1] m-0 mb-1 font-normal" data-i18n="exp.rivolta.role">Software Engineer</h3>
-        <div class="text-ink-dim text-sm mb-[18px]" data-i18n="exp.rivolta.company">PT Rivolta Technology Solutions</div>
-        <ul class="list-none p-0 m-0 grid gap-2.5">
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b1">Built an <strong class="text-ink font-medium">enterprise event management platform</strong> in Spring Boot + PostgreSQL + Redis — participant registration, scheduling, and dynamic group assignment with <strong class="text-ink font-medium">RBAC</strong>, supporting <strong class="text-ink font-medium">thousands of participants</strong> across international events.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b2">Engineered <strong class="text-ink font-medium">warehouse &amp; logistics microservices</strong> with Jersey, AWS Lambda, and MySQL — multi-legal-entity fulfillment assignment and intelligent warehouse selection.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b3">Contributed to a <strong class="text-ink font-medium">financial services</strong> monolith in Spring Boot — loan pre-closure calculation modules and secure RESTful APIs for sensitive transaction processing.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b4">Stood up internal <strong class="text-ink font-medium">starter templates</strong> (Express, React, Next, Spring Boot) with standardized CI/CD and best-practice docs for greenfield projects.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.rivolta.b5">Mentored <strong class="text-ink font-medium">3 interns</strong> on code review, debugging, and design patterns — MVC, Repository, DAO, Factory.</li>
-        </ul>
-        <div class="flex flex-wrap gap-1.5 mt-[18px]">
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Spring Boot</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Jersey</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">AWS Lambda</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">PostgreSQL</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">MySQL</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Redis</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Microservices</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">RBAC / JWT</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- Backend Engineer -->
-    <article class="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-10 py-9 border-t border-border fade-up" style="transition-delay: 300ms">
-      <div class="font-mono text-[13px] text-ink-dim" data-i18n="exp.be.date">Aug 2023 — Feb 2025</div>
-      <div>
-        <h3 class="font-serif text-[28px] leading-[1.1] m-0 mb-1 font-normal" data-i18n="exp.be.role">Backend Engineer</h3>
-        <div class="text-ink-dim text-sm mb-[18px]" data-i18n="exp.be.company">Java &amp; Spring Boot Developer</div>
-        <ul class="list-none p-0 m-0 grid gap-2.5">
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.be.b1">Built production-ready backend services with <strong class="text-ink font-medium">JWT &amp; RBAC</strong> authentication — secure user management and authorization workflows.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.be.b2">Developed RESTful APIs with optimized DB queries (PostgreSQL / MySQL), applying indexing and query-tuning strategies.</li>
-          <li class="pl-5 relative text-ink-dim text-[15px] leading-[1.55] before:content-[''] before:absolute before:left-0 before:top-[11px] before:w-2.5 before:h-px before:bg-accent" data-i18n="exp.be.b3">Applied <strong class="text-ink font-medium">clean architecture</strong> and <strong class="text-ink font-medium">SOLID</strong> principles for scalable, maintainable modules.</li>
-        </ul>
-        <div class="flex flex-wrap gap-1.5 mt-[18px]">
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Java</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">Spring Boot</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">JWT</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">REST</span>
-          <span class="font-mono text-[11px] text-ink-dim px-2.5 py-[5px] border border-border-2 rounded-full">SOLID</span>
-        </div>
-      </div>
-    </article>
-
   </div>
-</section>
+  <div class="roles">
+    {
+      roles.map((r) => (
+        <article class={`glass role${r.big ? ' big' : ''}`} data-reveal>
+          <div class="rhead">
+            <div class="ic"><Ico name={r.icon} /></div>
+            <div class="rlines">
+              <div class="rlabel" data-i18n={r.labelKey}>{chrome.en[r.labelKey]}</div>
+              <div class="rdate">
+                <span data-i18n={r.date} set:html={en[r.date]} />
+                {r.dateExtra && (
+                  <>
+                    {' · '}
+                    <span data-i18n={r.dateExtra} set:html={en[r.dateExtra]} />
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          <h3 data-i18n={r.roleKey} set:html={en[r.roleKey]} />
+          <div class="rco" data-i18n={r.coKey} set:html={en[r.coKey]} />
+          <ul>
+            {r.bullets.map((k) => (
+              <li data-i18n={k} set:html={en[k]} />
+            ))}
+          </ul>
+          <div class="rchips">
+            {r.chips.map((c, i) => (
+              <span class={`chip${i === 0 ? ' primary' : ''}`}>{c}</span>
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+  </div>
+  <div class="dock-domains dock dock-bl">
+    <span class="fillet f-tr fa"></span><span class="fillet f-tr fb"></span>
+    <div class="dl" data-i18n="ext.exp.shipped">{chrome.en['ext.exp.shipped']}</div>
+    <div class="dom">
+      <div class="ic"><Ico name="briefcase" /></div>
+      <div><b data-i18n="stats.domains.num" set:html={en['stats.domains.num']} /><span data-i18n="stats.domains.label" set:html={en['stats.domains.label']} /></div>
+    </div>
+  </div>
+  <div class="dock-facts dock dock-br">
+    <span class="fillet f-tl fa"></span><span class="fillet f-tl fb"></span>
+    <span data-i18n="exp.rivolta.b5" set:html={en['exp.rivolta.b5']} />
+  </div>
+</Window>

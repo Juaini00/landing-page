@@ -1,149 +1,67 @@
 ---
-// src/components/Hero.astro
-import en from '../i18n/en.json';
-import id from '../i18n/id.json';
+// Hero window: eyebrow, chrome headline, sub, CTAs, profile notch,
+// stats dock (bottom-left) and status dock (bottom-right).
+import type { CmsContent } from '../lib/cms';
+import Ico from './Ico.astro';
+import Window from './Window.astro';
+import { chrome } from '../lib/chrome';
 
-const heroMotionJson = JSON.stringify({
-  en: {
-    eyebrow: en['hero.eyebrow'],
-    roles: [
-      en['hero.role.1'],
-      en['hero.role.2'],
-      en['hero.role.3'],
-      en['hero.role.4'],
-      en['hero.role.5'],
-    ],
-  },
-  id: {
-    eyebrow: id['hero.eyebrow'],
-    roles: [
-      id['hero.role.1'],
-      id['hero.role.2'],
-      id['hero.role.3'],
-      id['hero.role.4'],
-      id['hero.role.5'],
-    ],
-  },
-});
+interface Props {
+  content: CmsContent;
+}
+const { content } = Astro.props;
+const { settings, translations } = content;
+const en = translations.en;
+
+const stats = [
+  { numKey: 'stats.years.num', unitKey: 'stats.years.unit', labelKey: 'stats.years.label' },
+  { numKey: 'stats.services.num', unitKey: 'stats.services.unit', labelKey: 'stats.services.label' },
+  { numKey: 'stats.cert.num', labelKey: 'stats.cert.label' },
+];
 ---
-<header class="py-[80px_0_80px] relative">
-  <div class="wrap hero-grid">
-
-    <!-- Block 1: eyebrow + heading (mobile: top; desktop: heading area) -->
-    <div class="hero-heading fade-up" style="transition-delay: 100ms">
-      <div class="inline-flex items-center gap-[10px] font-mono text-[12px] text-accent uppercase tracking-[0.18em] mb-7 min-h-[16px]">
-        <span style="display:inline-block;width:24px;height:1px;background:var(--color-accent);flex-shrink:0"></span>
-        <span id="eyebrow-text"></span><span class="type-caret" id="eyebrow-caret"></span>
-      </div>
-      <h1 class="font-serif font-normal text-[clamp(48px,8vw,104px)] leading-[.95] tracking-[-0.02em] m-0">
-        <span data-i18n="hero.h1.line1">Reliable software,</span><br/>
-        <span data-i18n="hero.h1.line2">built to</span>
-        <em class="italic text-accent font-normal" data-i18n="hero.h1.em1">adapt.</em>
-      </h1>
+<Window id="top" tabKey="ext.hero.tab" tabEn={chrome.en['ext.hero.tab']} variant="hero" bp="70% 30%">
+  <div class="copy">
+    <div class="eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow" set:html={en['hero.eyebrow']} /></div>
+    <h1 class="chrome display">
+      <span data-i18n="hero.h1.line1" set:html={en['hero.h1.line1']} /><br />
+      <span data-i18n="hero.h1.line2" set:html={en['hero.h1.line2']} /> <span data-i18n="hero.h1.em1" set:html={en['hero.h1.em1']} />
+    </h1>
+    <p class="sub" data-i18n="hero.sub" set:html={en['hero.sub']} />
+    <div class="ctas">
+      <a class="go" href="#contact"><span data-i18n="hero.cta.primary" set:html={en['hero.cta.primary']} /><span class="arr"><Ico name="arrow-up-right" /></span></a>
+      <a class="ln" href="#projects"><span data-i18n="hero.cta.secondary" set:html={en['hero.cta.secondary']} /></a>
     </div>
-
-    <!-- Block 2: avatar scene (mobile: middle; desktop: scene area spanning both rows) -->
-    <div class="hero-scene scene fade-up" aria-hidden="true" style="transition-delay: 300ms">
-      <div class="avatar-wrap">
-        <div class="avatar-frame">
-          <img src="/juaini-avatar.jpeg" alt="Juaini" />
-        </div>
-        <span class="avatar-corner tl"></span>
-        <span class="avatar-corner tr"></span>
-        <span class="avatar-corner bl"></span>
-        <span class="avatar-corner br"></span>
-        <div class="avatar-info">
-          <span class="name">@juaini · Software Engineer</span>
-          <span class="live">Online</span>
-        </div>
-      </div>
-      <div class="float-chip c1"><span class="d"></span>Spring Boot</div>
-      <div class="float-chip c2"><span class="d"></span>React Native</div>
-      <div class="float-chip c3"><span class="d"></span>Applied AI</div>
-      <div class="float-chip c4"><span class="d"></span>AWS λ</div>
-    </div>
-
-    <!-- Block 3: role-line + paragraph + CTA (mobile: bottom; desktop: body area) -->
-    <div class="hero-body fade-up mt-32 md:mt-0" style="transition-delay: 200ms">
-      <div class="role-line" aria-live="polite">
-        <span class="arrow">$</span>
-        <span>currently:</span>
-        <span class="role-text" id="role-text"></span>
-        <span class="type-caret"></span>
-      </div>
-      <p class="max-w-[540px] text-ink-dim text-lg leading-[1.55] mb-10"
-         data-i18n="hero.sub">
-        I'm <strong class="text-ink font-medium">Juaini</strong> — a software engineer with <strong class="text-ink font-medium">3+ years</strong>
-        shipping production backend systems. I also build mobile and web products, and apply AI
-        where it creates real value without compromising reliability.
-      </p>
-      <div class="flex gap-3.5 flex-wrap">
-        <a href="mailto:juaini742@gmail.com"
-           class="inline-flex items-center gap-2.5 px-[22px] py-[14px] rounded-full text-sm font-medium tracking-[0.01em] bg-accent text-[#111] hover:bg-accent-soft transition-colors active:translate-y-px">
-          <span data-i18n="hero.cta.primary">Start a project</span>
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#projects" data-i18n="hero.cta.secondary"
-           class="inline-flex items-center gap-2.5 px-[22px] py-[14px] rounded-full text-sm font-medium tracking-[0.01em] border border-border-2 text-ink hover:border-ink-dim transition-colors active:translate-y-px">
-          View portfolio
-        </a>
-      </div>
-    </div>
-
   </div>
-</header>
-
-<script define:vars={{ heroMotionJson }}>
-  const content = JSON.parse(heroMotionJson);
-  const eyebrowEl = document.getElementById('eyebrow-text');
-  const eyebrowCaret = document.getElementById('eyebrow-caret');
-  const roleEl = document.getElementById('role-text');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let animationGeneration = 0;
-
-  const wait = (duration) => new Promise((resolve) => setTimeout(resolve, duration));
-
-  async function typeText(el, text, speed, generation) {
-    el.textContent = '';
-    for (let i = 0; i <= text.length; i++) {
-      if (generation !== animationGeneration) return false;
-      el.textContent = text.slice(0, i);
-      await wait(speed);
+  {content.projects[0] && (
+    <div class="termcard glass">
+      <div class="tline"><span class="g" data-i18n="ext.hero.term.building">{chrome.en['ext.hero.term.building']}</span> <b data-i18n={`${content.projects[0].i18nPrefix}.title`} set:html={en[`${content.projects[0].i18nPrefix}.title`]} /></div>
+      <div class="tline"><span class="g" data-i18n="ext.hero.term.focus">{chrome.en['ext.hero.term.focus']}</span> <b data-i18n="stats.domains.label" set:html={en['stats.domains.label']} /></div>
+      <div class="tline"><span class="g" data-i18n="ext.hero.term.stack">{chrome.en['ext.hero.term.stack']}</span> <b>{content.settings.heroChips.join(' · ')}</b></div>
+    </div>
+  )}
+  <div class="profile dock notch-r">
+    <span class="fillet f-tl fa"></span><span class="fillet f-bl fb"></span>
+    <div class="avatar"><img class="pic" src={settings.avatarUrl} alt={settings.avatarLabel} width="64" height="64" /></div>
+    <div>
+      <div class="lbl" data-i18n="ext.hero.engineer">Engineer</div>
+      <div class="who">{settings.name}</div>
+      <div class="rsub" data-i18n="hero.role.1" set:html={en['hero.role.1']} />
+    </div>
+  </div>
+  <div class="stats dock dock-bl">
+    <span class="fillet f-tr fa"></span><span class="fillet f-tr fb"></span>
+    {
+      stats.map((s) => (
+        <div class="stat">
+          <b class="chrome"><span data-i18n={s.numKey} set:html={en[s.numKey]} />{s.unitKey && <span class={`u${/^[+\-–]/.test(en[s.unitKey]) ? ' tight' : ''}`} data-i18n={s.unitKey} set:html={en[s.unitKey]} />}</b>
+          <span data-i18n={s.labelKey} set:html={en[s.labelKey]} />
+        </div>
+      ))
     }
-    return true;
-  }
-
-  async function animateHero(lang) {
-    const generation = ++animationGeneration;
-    const localized = content[lang] ?? content.en;
-
-    if (reducedMotion) {
-      eyebrowEl.textContent = localized.eyebrow;
-      eyebrowCaret.style.display = 'none';
-      roleEl.textContent = localized.roles[0];
-      return;
-    }
-
-    eyebrowCaret.style.display = '';
-    if (!(await typeText(eyebrowEl, localized.eyebrow, 35, generation))) return;
-    eyebrowCaret.style.opacity = '.35';
-
-    let wordIndex = 0;
-    while (generation === animationGeneration) {
-      const word = localized.roles[wordIndex % localized.roles.length];
-      if (!(await typeText(roleEl, word, 55, generation))) return;
-      await wait(1600);
-      if (generation !== animationGeneration) return;
-      for (let i = word.length; i >= 0; i--) {
-        if (generation !== animationGeneration) return;
-        roleEl.textContent = word.slice(0, i);
-        await wait(30);
-      }
-      await wait(300);
-      wordIndex++;
-    }
-  }
-
-  window.addEventListener('languagechange', (event) => animateHero(event.detail.lang));
-  animateHero(localStorage.getItem('lang') ?? 'en');
-</script>
+  </div>
+  <div class="status dock dock-br">
+    <span class="fillet f-tl fa"></span><span class="fillet f-tl fb"></span>
+    <div class="term"><span class="g" data-i18n="ext.hero.currently">$ currently:</span> <b data-i18n="hero.role.1" set:html={en['hero.role.1']} /></div>
+    <div class="avail"><span class="dot"></span><span data-i18n="contact.avail.status" set:html={en['contact.avail.status']} /></div>
+  </div>
+</Window>

@@ -1,66 +1,69 @@
 ---
 // src/layouts/Layout.astro
-interface Props {
-  title?: string;
-}
+import type { CmsSettings } from '../lib/cms';
+import { embeddableJson } from '../lib/embed';
 
-const { title = 'Juaini — Software Engineer | Backend, Mobile & Applied AI' } = Astro.props;
-const description = 'Software Engineer building production backend systems, cross-platform mobile apps, modern web products, and reliable AI-assisted workflows.';
+interface Props {
+  settings: CmsSettings;
+  sprite: string;
+}
+const { settings, sprite } = Astro.props;
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Juaini',
-  url: 'https://portfolio-juaini.vercel.app',
-  jobTitle: 'Software Engineer',
-  sameAs: [
-    'https://www.linkedin.com/in/juaini-i',
-    'https://github.com/Juaini00',
-  ],
-  knowsAbout: [
-    'Backend Engineering',
-    'Applied AI',
-    'LLM Applications',
-    'AI Guardrails',
-    'Vector Retrieval',
-    'Spring Boot',
-    'Rust',
-    'PostgreSQL',
-  ],
+  name: settings.name,
+  url: settings.siteUrl,
+  description: settings.description,
+  sameAs: [settings.linkedinUrl, settings.githubUrl],
 };
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" style={`--avatar:url(${JSON.stringify(settings.avatarUrl)})`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta name="description" content={description} />
-    <meta name="author" content="Juaini" />
+    <meta name="description" content={settings.description} />
+    <meta name="author" content={settings.name} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://portfolio-juaini.vercel.app" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:url" content={settings.siteUrl} />
+    <meta property="og:title" content={settings.title} />
+    <meta property="og:description" content={settings.description} />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="id_ID" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={settings.title} />
+    <meta name="twitter:description" content={settings.description} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-    <title>{title}</title>
+    <script type="application/ld+json" set:html={embeddableJson(structuredData)} />
+    <title>{settings.title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@600;800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <slot name="head" />
+    <!-- Motion boot: set the entrance pose before first paint so the deferred
+         module never has to hide content that already painted. The timeout
+         restores everything if the module fails to run. -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        root.classList.add('motion-boot', 'motion-enter');
+        setTimeout(function () { root.classList.remove('motion-boot'); }, 3000);
+      })();
+    </script>
+
   </head>
   <body>
+    <Fragment set:html={sprite} />
     <slot />
   </body>
 </html>
