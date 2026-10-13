@@ -8,15 +8,13 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.1.8"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.2.2",
-    "tailwindcss": "^4.2.2"
+    "@tabler/icons": "^3.49.0",
+    "astro": "^6.1.8",
+    "simple-icons": "^16.34.0"
   }
 }

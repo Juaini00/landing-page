@@ -1,0 +1,11 @@
+---
+// Brand mark from the sprite (simple-icons). Unresolved names render nothing
+// here — they still appear as plain-text chips via Chip.astro.
+interface Props {
+  symbolId: string | null;
+  title: string;
+  class?: string;
+}
+const { symbolId, title, class: cls = 'bmark' } = Astro.props;
+---
+{symbolId ? <svg class={cls} aria-label={title} role="img"><use href={`#${symbolId}`} /></svg> : null}

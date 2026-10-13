@@ -1,0 +1,104 @@
+---
+// Toolbox window: nine glass category cards (payload-driven icons, counts,
+// brand marks, chips) + categories/tools dock + home-base pill dock.
+import type { CmsContent } from '../lib/cms';
+import { chrome } from '../lib/chrome';
+import Chip from './Chip.astro';
+import Window from './Window.astro';
+
+interface Props {
+  content: CmsContent;
+  techIds: Map<string, string | null>;
+}
+const { content, techIds } = Astro.props;
+const en = content.translations.en;
+const stack = content.stack;
+const technologies = [...new Set(stack.flatMap(category => [...category.primary, ...category.items]))];
+const toolTotal = technologies.length;
+---
+<Window id="stack" tabKey="ext.stack.tab" tabEn={chrome.en['ext.stack.tab'].replace('{n}', String(toolTotal))} fmt={{ n: String(toolTotal) }} bp="45% 20%">
+  <div class="pad">
+  <div class="sec-head">
+    <h2 class="chrome display" data-i18n="stack.title" set:html={en['stack.title']} />
+    <div class="side">
+      <p data-i18n="stack.desc" set:html={en['stack.desc']} />
+    </div>
+  </div>
+  {technologies.length > 0 && (
+    <div class="technology-strip" data-marquee>
+      <div class="technology-heading">
+        <span id="technology-strip-label" class="lbl" data-i18n="ext.motion.technologies">{chrome.en['ext.motion.technologies']}</span>
+        <button type="button" class="marquee-toggle" data-marquee-toggle hidden aria-controls="technology-list">
+          <span data-marquee-pause data-i18n="ext.motion.pause">{chrome.en['ext.motion.pause']}</span>
+          <span data-marquee-resume data-i18n="ext.motion.resume" hidden>{chrome.en['ext.motion.resume']}</span>
+        </button>
+      </div>
+      <div class="technology-viewport" data-marquee-viewport>
+        <div class="technology-track" data-marquee-track>
+          <ul id="technology-list" class="technology-list" data-marquee-original aria-labelledby="technology-strip-label" role="list">
+            {technologies.map(name => (
+              <li>
+                {techIds.get(name) && <svg class="bmark" aria-hidden="true"><use href={`#${techIds.get(name)}`} /></svg>}
+                <span>{name}</span>
+              </li>
+            ))}
+          </ul>
+          <ul class="technology-list technology-duplicate" data-marquee-duplicate aria-hidden="true">
+            {technologies.map(name => (
+              <li>
+                {techIds.get(name) && <svg class="bmark" aria-hidden="true"><use href={`#${techIds.get(name)}`} /></svg>}
+                <span>{name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  )}
+  <div class="stack-grid">
+    {
+      stack.map((s) => (
+        <article class="glass stack-card" data-reveal>
+          <div class="shead">
+            <div class="ic">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.svgPath} />
+            </div>
+            <div class="grow">
+              <h3 data-i18n={`stack.${s.key}`} set:html={en[`stack.${s.key}`]} />
+              <div class="lbl">{s.desc}</div>
+            </div>
+            <div class="scount">{s.count} {s.countLabel}</div>
+          </div>
+          <div class="marks">
+            {[...s.primary, ...s.items]
+              .map((name) => ({ name, id: techIds.get(name) ?? null }))
+              .filter((m) => m.id)
+              .map((m) => (
+                <svg class="bmark" aria-label={m.name} role="img"><use href={`#${m.id}`} /></svg>
+              ))}
+          </div>
+          <div class="schips">
+            {s.primary.map((name) => <Chip name={name} symbolId={techIds.get(name) ?? null} primary />)}
+            {s.items.map((name) => <Chip name={name} symbolId={techIds.get(name) ?? null} />)}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+  </div>
+  <div class="dock-counts dock dock-bl">
+    <span class="fillet f-tr fa"></span><span class="fillet f-tr fb"></span>
+    <div class="f">
+      <b class="chrome">{stack.length}</b>
+      <span data-i18n="ext.stack.categories">{chrome.en['ext.stack.categories']}</span>
+    </div>
+    <div class="f">
+      <b class="chrome">{toolTotal}</b>
+      <span data-i18n="ext.stack.tools">{chrome.en['ext.stack.tools']}</span>
+    </div>
+  </div>
+  <div class="dock-home dock dock-br">
+    <span class="fillet f-tl fa"></span><span class="fillet f-tl fb"></span>
+    <div class="pill-green">{content.stack.find(category => category.key === 'backend')?.primary.join(' · ')}</div>
+  </div>
+</Window>

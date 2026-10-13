@@ -1,67 +1,71 @@
 ---
-// src/components/Contact.astro
+// Contact window: hero-mirror layout — chrome headline + CTA, profile notch,
+// channels dock (email / LinkedIn / WhatsApp) and location dock.
+import type { CmsContent } from '../lib/cms';
+import { chrome } from '../lib/chrome';
+import Ico from './Ico.astro';
+import Window from './Window.astro';
+
+interface Props {
+  content: CmsContent;
+}
+const { content } = Astro.props;
+const en = content.translations.en;
+const s = content.settings;
+const linkedinHandle = s.linkedinUrl.replace(/\/+$/, '').split('/').pop() ?? s.linkedinUrl;
+
+const channels = [
+  { icon: 'mail', labelKey: 'ext.contact.email', href: `mailto:${s.email}`, value: s.email },
+  { icon: 'brand-linkedin', labelKey: 'ext.contact.linkedin', href: s.linkedinUrl, value: `@${linkedinHandle}` },
+  { icon: 'brand-whatsapp', labelKey: 'ext.contact.whatsapp', href: `https://wa.me/${s.phone.replace(/[^0-9]/g, '')}`, value: s.phoneLabel },
+];
 ---
-<section
-  class="contact-section py-[140px] relative overflow-hidden"
-  id="contact"
->
-  <div class="wrap relative z-10">
-    <div class="text-center">
-      <div class="contact-eyebrow inline-flex fade-up">
-        <span class="pulse-dot"></span>
-        <span data-i18n="contact.eyebrow">Open for software engineering work</span>
-      </div>
+<Window id="contact" tabKey="ext.contact.tab" tabEn={chrome.en['ext.contact.tab']} variant="contact" bp="70% 30%">
+  <div class="copy" data-reveal="head">
+    <div class="eyebrow">
+      <span class="dot"></span><span data-i18n="contact.eyebrow" set:html={en['contact.eyebrow']} />
     </div>
-
-    <h2
-      class="font-serif font-normal text-center text-[clamp(56px,9vw,120px)] leading-[.95] tracking-[-0.025em] m-0 mb-8 fade-up"
-      style="transition-delay: 100ms"
-      data-i18n="contact.heading"
-    >Building a product<br/>that needs a <em class="text-accent italic font-normal">steady hand?</em></h2>
-
-    <p
-      class="text-ink-dim max-w-[620px] mx-auto mb-14 text-lg leading-[1.6] text-center fade-up"
-      style="transition-delay: 200ms"
-      data-i18n="contact.sub"
-    >I'm open to <strong class="text-ink font-medium">freelance engagements</strong>, <strong class="text-ink font-medium">full-time roles</strong>, and <strong class="text-ink font-medium">contract work</strong> — across backend systems, mobile and web products, business workflows, and practical AI-assisted features.</p>
-
-    <div class="fade-up" style="transition-delay: 300ms">
-      <a class="mail-card" href="mailto:juaini742@gmail.com">
-        <div class="mail-card-head">
-          <span class="traffic"><span></span><span></span><span></span></span>
-          <span class="file">— send_message.sh</span>
-          <span class="live">replies within 24h</span>
-        </div>
-        <div class="mail-card-body">
-          <div class="glyph"><img src="/juaini-avatar.jpeg" alt="Juaini" /></div>
-          <div>
-            <div class="meta-lbl" data-i18n="contact.mail.label">Best way to reach me</div>
-            <div class="email">juaini742@gmail.com</div>
-          </div>
-          <div class="arrow-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </div>
-        </div>
+    <h2 class="chrome display" data-i18n="contact.heading" set:html={en['contact.heading']} />
+    <p class="sub" data-i18n="contact.sub" set:html={en['contact.sub']} />
+    <div class="ctas">
+      <a class="go" href={`mailto:${s.email}`}><span data-i18n="ext.contact.send">{chrome.en['ext.contact.send']}</span><span class="arr"><Ico name="arrow-up-right" /></span></a>
+      <a class="ln" href={s.linkedinUrl} target="_blank" rel="noopener">
+        <span data-i18n="ext.contact.linkedin">{chrome.en['ext.contact.linkedin']}</span>&nbsp;· @{linkedinHandle}
       </a>
-    </div>
-
-    <div class="contact-channels fade-up" style="transition-delay: 400ms">
-      <a class="channel" href="https://www.linkedin.com/in/juaini-i" target="_blank" rel="noopener">
-        <div class="ch-lbl">LinkedIn</div>
-        <div class="ch-val">@juaini-i <span class="ext">↗</span></div>
-      </a>
-      <a class="channel" href="tel:+6285751633160">
-        <div class="ch-lbl">WhatsApp</div>
-        <div class="ch-val">+62 857 5163 3160 <span class="ext">↗</span></div>
-      </a>
-    </div>
-
-    <div class="avail-strip fade-up" style="transition-delay: 500ms">
-      <div class="av-item"><span style="color:var(--color-green)">●</span> <b data-i18n="contact.avail.status">Available</b> <span data-i18n="contact.avail.from">for selected engagements</span></div>
-      <div class="sep"></div>
-      <div class="av-item">🌏 UTC+8 · <b>Kalimantan Selatan</b></div>
-      <div class="sep"></div>
-      <div class="av-item" data-i18n="contact.avail.remote">Remote-friendly</div>
     </div>
   </div>
-</section>
+  <div class="profile dock notch-r">
+    <span class="fillet f-tl fa"></span><span class="fillet f-bl fb"></span>
+    <div class="avatar"><img class="pic" src={s.avatarUrl} alt={s.avatarLabel} width="64" height="64" /></div>
+    <div>
+      <div class="lbl" data-i18n="ext.hero.engineer">{chrome.en['ext.hero.engineer']}</div>
+      <div class="who">{s.name}</div>
+      <div class="avail-line">
+        <span data-i18n="contact.avail.status" set:html={en['contact.avail.status']} /> · <span data-i18n="contact.avail.remote" set:html={en['contact.avail.remote']} />
+      </div>
+    </div>
+  </div>
+  <div class="dock-channels dock dock-bl">
+    <span class="fillet f-tr fa"></span><span class="fillet f-tr fb"></span>
+    {
+      channels.map((c) => (
+        <a class="channel" href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener">
+          <div class="ic"><Ico name={c.icon} /></div>
+          <div>
+            <span class="lbl" data-i18n={c.labelKey}>{chrome.en[c.labelKey]}</span>
+            <b>{c.value}</b>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+  <div class="dock-where dock dock-br">
+    <span class="fillet f-tl fa"></span><span class="fillet f-tl fb"></span>
+    <div class="ic"><Ico name="map-pin" /></div>
+    <div class="loc">
+      <b data-i18n="contact.avail.from" set:html={en['contact.avail.from']} />
+      <span data-i18n="contact.avail.remote" set:html={en['contact.avail.remote']} />
+    </div>
+    <div class="avail"><span class="dot"></span><span data-i18n="contact.avail.status" set:html={en['contact.avail.status']} /></div>
+  </div>
+</Window>

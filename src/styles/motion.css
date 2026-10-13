@@ -1,0 +1,393 @@
+/* State layer for scripts/motion.ts and scripts/hover.ts: scroll reveal
+   variants, the hero entrance, odometer counters, the Applied AI pipeline
+   trace, the Toolbox marquee, pointer depth, scroll-linked depth, and project
+   media states. Static layout lives in global.css. Every moving rule sits
+   behind prefers-reduced-motion: no-preference. */
+
+@property --wipe { syntax: '<percentage>'; inherits: false; initial-value: 130%; }
+@property --sheen { syntax: '<percentage>'; inherits: false; initial-value: -30%; }
+
+:root {
+  --ease-out-expo: cubic-bezier(.16,1,.3,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+  --ease-spring: linear(0, .009, .035 2.1%, .141, .281 6.7%, .723 12.9%, .938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, .991, .977 51%, .974 53.8%, .975 57.1%, .997 69.8%, 1.003 76.9%, 1.004 83.8%, 1);
+}
+.win { --clip-r: var(--r-win); }
+@media (max-width: 599px) { .win { --clip-r: 28px; } }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+@keyframes m-rise { from { opacity: 0; translate: 0 28px; } }
+@keyframes m-rise-soft { from { opacity: 0; translate: 0 22px; filter: blur(8px); } }
+@keyframes m-drop { from { opacity: 0; translate: 0 -16px; } }
+@keyframes m-wipe { from { --wipe: 0%; translate: 0 .16em; } }
+@keyframes m-sheen { from { --sheen: -30%; } to { --sheen: 130%; } }
+@keyframes m-pop { from { opacity: 0; scale: .35; rotate: -24deg; } }
+@keyframes m-chip { from { opacity: 0; translate: 0 10px; scale: .9; } }
+@keyframes m-tick { from { scale: 0 1; } }
+@keyframes m-slide { from { opacity: 0; translate: -10px 0; } }
+@keyframes m-type { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 -2px 0 0); } }
+@keyframes m-caret { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes m-win-open {
+  from { clip-path: inset(3% 2% 3% 2% round var(--clip-r)); scale: .985; }
+  to { clip-path: inset(0 round var(--clip-r)); scale: 1; }
+}
+@keyframes m-dock-up { from { clip-path: inset(100% -40px -40px -40px); } to { clip-path: inset(-40px); } }
+@keyframes m-dock-in { from { clip-path: inset(-40px -40px -40px 100%); } to { clip-path: inset(-40px); } }
+
+/* Display headings carry a wipe mask and a chrome sheen at rest; both are
+   fully transparent until animated, so static rendering is unchanged. */
+:is(.display, .build h3) {
+  -webkit-mask-image: linear-gradient(172deg, #000 calc(var(--wipe, 130%) - 28%), transparent var(--wipe, 130%));
+  mask-image: linear-gradient(172deg, #000 calc(var(--wipe, 130%) - 28%), transparent var(--wipe, 130%));
+}
+
+/* Scroll reveal --------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    transition:
+      opacity 800ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      translate 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      scale 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      transform 900ms var(--ease-out-expo);
+  }
+  [data-reveal][data-reveal-pending] { opacity: 0; translate: 0 56px; scale: .96; }
+  [data-reveal].reveal-immediate { transition: transform 900ms var(--ease-out-expo); }
+
+  /* Windows open from a clipped inset; the hanging tab drops in after. */
+  [data-reveal='window'] {
+    transition:
+      clip-path 1200ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      translate 1200ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      scale 1200ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+  }
+  [data-reveal='window'][data-reveal-pending] {
+    opacity: 1; translate: 0 72px; scale: .97;
+    clip-path: inset(5% 3% 8% 3% round var(--clip-r));
+  }
+  [data-reveal='window'].is-in { clip-path: inset(0 round var(--clip-r)); }
+  [data-reveal='window'].is-settled, [data-reveal='window'].reveal-immediate { clip-path: none; transition: none; }
+  [data-reveal='window'] .tab {
+    transition: color var(--dur-hover) var(--ease-hover),
+      translate 900ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 380ms);
+  }
+  [data-reveal='window'][data-reveal-pending] .tab { translate: 0 -110%; }
+
+  /* Headings: the surface stays put, its children arrive in reading order. */
+  [data-reveal='head'][data-reveal-pending] { opacity: 1; translate: none; scale: none; }
+  [data-reveal='head'][data-reveal-pending] > * { opacity: 0; }
+  [data-reveal='head'][data-reveal-play] > * {
+    animation: m-rise-soft 1000ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + var(--i, 0) * 90ms) backwards;
+  }
+  [data-reveal='head'][data-reveal-play] > :is(.display, h3.chrome) {
+    animation:
+      m-wipe 1400ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + var(--i, 0) * 90ms) backwards,
+      m-sheen 1800ms var(--ease-in-out) calc(var(--reveal-delay, 0ms) + var(--i, 0) * 90ms + 900ms);
+  }
+  [data-reveal='head'][data-reveal-play] > :is(.sub, p) { animation-duration: 1200ms; }
+
+  /* Children of a revealed surface: icons pop, chips and marks stagger,
+     bullet ticks draw, diagram nodes travel in their flow order. */
+  [data-reveal-play] .ic {
+    animation: m-pop 900ms var(--ease-spring) calc(var(--reveal-delay, 0ms) + 180ms) backwards;
+  }
+  [data-reveal-play] :is(.chip, .marks > .bmark, .bmarks > .bmark) {
+    animation: m-chip 650ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 380ms + var(--i, 0) * 35ms) backwards;
+  }
+  [data-reveal-play] .role li {
+    animation: m-slide 800ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 260ms + var(--i, 0) * 70ms) backwards;
+  }
+  [data-reveal-play] .role li::before {
+    transform-origin: left center;
+    animation: m-tick 700ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 360ms + var(--i, 0) * 70ms) backwards;
+  }
+  [data-reveal-play] :is(.console-step, .console-arrow, .console-flow-row, .console-note) {
+    animation: m-rise 800ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 280ms + var(--i, 0) * 70ms) backwards;
+  }
+  [data-reveal-play] .channel {
+    animation: m-rise 900ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 300ms + var(--i, 0) * 90ms) backwards;
+  }
+  [data-reveal-play] .channel .ic { animation-delay: calc(var(--reveal-delay, 0ms) + 380ms + var(--i, 0) * 90ms); }
+
+  @media (min-width: 1280px) {
+    /* Notched docks grow out of the frame edge they belong to. */
+    [data-reveal='dock'] { transition: clip-path 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms); }
+    [data-reveal='dock'][data-reveal-pending] {
+      opacity: 1; translate: none; scale: none;
+      clip-path: inset(100% -40px -40px -40px);
+    }
+    [data-reveal='dock'].notch-top[data-reveal-pending] { clip-path: inset(-40px -40px 100% -40px); }
+    [data-reveal='dock'].notch-r[data-reveal-pending] { clip-path: inset(-40px -40px -40px 100%); }
+    [data-reveal='dock'].is-in { clip-path: inset(-40px); }
+    [data-reveal='dock'].reveal-immediate { transition: none; }
+    [data-reveal='dock'][data-reveal-play] > :not(.fillet, .channel) {
+      animation: m-rise 900ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 260ms + var(--i, 0) * 80ms) backwards;
+    }
+
+    /* Project builds: the diagram slides in from its own side. */
+    .build:not(.diagram-left) > .bdiag[data-reveal-pending] { translate: 80px 0; }
+    .build.diagram-left > .bdiag[data-reveal-pending] { translate: -80px 0; }
+  }
+}
+
+/* Hero entrance: one choreographed arrival on first load (motion.ts adds
+   html.motion-enter). The window opens, the headline wipes in and catches
+   light, docks grow out of the frame, the terminal lines type. */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-enter nav.top > :is(.wordmark, .nav-capsule, .lang, .menu-btn) {
+    animation: m-drop 900ms var(--ease-out-expo) backwards;
+  }
+  .motion-enter nav.top > .nav-capsule { animation-delay: 80ms; }
+  .motion-enter nav.top > :is(.lang, .menu-btn) { animation-delay: 160ms; }
+
+  .motion-enter .win.hero { animation: m-win-open 1200ms var(--ease-out-expo) both; }
+  .motion-enter .hero .eyebrow { animation: m-rise-soft 1000ms var(--ease-out-expo) 120ms backwards; }
+  .motion-enter .hero h1 {
+    animation:
+      m-wipe 1500ms var(--ease-out-expo) 180ms backwards,
+      m-sheen 1800ms var(--ease-in-out) 1150ms;
+  }
+  .motion-enter .hero .sub { animation: m-rise-soft 1100ms var(--ease-out-expo) 420ms backwards; }
+  .motion-enter .hero .ctas { animation: m-rise-soft 1100ms var(--ease-out-expo) 540ms backwards; }
+  .motion-enter .hero .termcard { animation: m-rise 1100ms var(--ease-out-expo) 760ms backwards; }
+  .motion-enter .hero .termcard .tline {
+    animation: m-type var(--type-dur, 600ms) steps(var(--chars, 20), end) var(--type-delay, 1000ms) backwards;
+  }
+  .motion-enter .hero .termcard .tline:last-child::after,
+  .motion-enter .hero .term::after {
+    content: ''; display: inline-block; width: 7px; height: 12px; margin-left: 5px;
+    vertical-align: -2px; background: var(--green); opacity: 0;
+    animation: m-caret 600ms step-end var(--caret-delay, 1800ms) 3 backwards;
+  }
+  .motion-enter .hero .term {
+    animation: m-type var(--type-dur, 700ms) steps(var(--chars, 24), end) var(--type-delay, 1150ms) backwards;
+  }
+  .motion-enter .hero .avail { animation: m-rise 900ms var(--ease-out-expo) 1000ms backwards; }
+
+  @media (min-width: 1280px) {
+    .motion-enter .hero .profile { animation: m-dock-in 1100ms var(--ease-out-expo) 520ms both; }
+    .motion-enter .hero :is(.stats, .status) { animation: m-dock-up 1100ms var(--ease-out-expo) 620ms both; }
+    .motion-enter .hero .status { animation-delay: 720ms; }
+    .motion-enter .hero :is(.profile, .stats) > :not(.fillet) {
+      animation: m-rise 900ms var(--ease-out-expo) 780ms backwards;
+    }
+    .motion-enter .hero .stats > .stat:nth-child(4) { animation-delay: 860ms; }
+    .motion-enter .hero .stats > .stat:nth-child(5) { animation-delay: 940ms; }
+  }
+  @media (max-width: 1279px) {
+    .motion-enter .hero :is(.profile, .stats, .status) { animation: m-rise 1000ms var(--ease-out-expo) 600ms backwards; }
+  }
+
+  /* Boot pose (set by the inline head script before first paint) matches the
+     window reveal's pending pose, so motion.ts takes over without a flash. */
+  .motion-boot .win:not(.hero) { clip-path: inset(5% 3% 8% 3% round var(--clip-r)); translate: 0 72px; scale: .97; }
+}
+
+/* Odometer counters ------------------------------------------------------
+   Cells carry --pad of vertical room so tall display glyphs never bleed into
+   the neighbouring cell; the negative margin keeps the line box unchanged. */
+.odo { --pad: .3em; display: inline-flex; vertical-align: top; margin-block: calc(-1 * var(--pad)); }
+.odo-col {
+  display: inline-block; height: calc(1lh + 2 * var(--pad)); overflow: hidden; text-align: center;
+  -webkit-mask-image: linear-gradient(transparent, #000 calc(var(--pad) * .8), #000 calc(100% - var(--pad) * .8), transparent);
+  mask-image: linear-gradient(transparent, #000 calc(var(--pad) * .8), #000 calc(100% - var(--pad) * .8), transparent);
+}
+.odo-reel { display: block; }
+.odo-reel > span { display: block; box-sizing: border-box; height: calc(1lh + 2 * var(--pad)); padding-block: var(--pad); }
+.chrome .odo-reel > span {
+  background: linear-gradient(180deg,#fff,#bbc6d1 54%,#eef2f5) 0 var(--pad) / 100% 1lh no-repeat;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.odo.is-rolling .odo-reel {
+  translate: 0 calc(var(--to) * -1 * (1lh + 2 * var(--pad)));
+  transition: translate 1900ms cubic-bezier(.18,.84,.3,1.012) var(--roll-delay, 0ms);
+}
+
+/* Applied AI pipeline trace --------------------------------------------- */
+.pstep { position: relative; }
+.pstep .ic { position: relative; z-index: 1; }
+.pipeline-link {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+  z-index: 0;
+}
+[data-pipeline-line] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--green);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+.trace-complete [data-pipeline-line] { transform: scaleX(1); }
+.pipeline-emphasis {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid var(--steel);
+  opacity: 0;
+  pointer-events: none;
+}
+.guard .pipeline-emphasis { border-color: var(--green); }
+.trace-complete .pipeline-emphasis { opacity: .6; }
+.trace-complete .guard .pipeline-emphasis { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  [data-pipeline-line] { transition: transform 1s var(--ease), opacity 300ms var(--ease-out-expo); }
+  .pipeline-emphasis { transition: opacity 300ms var(--ease-out-expo), border-color 300ms var(--ease-out-expo); }
+  .trace-armed .pstep > :is(.ic, b, .num) { transition: opacity 500ms var(--ease-out-expo), background-color var(--dur-hover) var(--ease-hover), color var(--dur-hover) var(--ease-hover); }
+  .trace-armed:not(.trace-complete) .pstep:not(.is-reached) > :is(.ic, b, .num) { opacity: .28; }
+}
+@media (hover: hover) and (pointer: fine) {
+  /* Pointing at a step shows the flow up to it; later steps recede. */
+  .trace-complete .pstep:hover ~ .pstep > :is(.ic, b, .num) { opacity: .38; }
+  .trace-complete .pstep:hover [data-pipeline-line],
+  .trace-complete .pstep:hover ~ .pstep [data-pipeline-line] { opacity: .18; }
+  .trace-complete :is(.pstep:has(~ .pstep:hover), .pstep:hover):not(.guard) .pipeline-emphasis { opacity: 1; border-color: var(--ink); }
+}
+@media (min-width: 600px) and (max-width: 1020px) {
+  .pipeline-link { width: calc(100% - 24px); }
+  .pstep:nth-child(3n) .pipeline-link { display: none; }
+}
+@media (max-width: 599px) {
+  .pipeline-link { display: block; top: 100%; left: 23px; width: 1px; height: 16px; }
+  [data-pipeline-line] { transform-origin: top center; transform: scaleY(0); }
+  .trace-complete [data-pipeline-line] { transform: scaleY(1); }
+}
+
+/* Toolbox technology marquee --------------------------------------------- */
+.technology-strip { margin: 32px 0; }
+.technology-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.marquee-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  color: var(--dim);
+  font: 11px var(--font-mono);
+  letter-spacing: .05em;
+}
+.marquee-toggle:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.technology-viewport { overflow: visible; }
+.technology-track { display: flex; width: 100%; }
+.technology-list { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; }
+.marquee-running .technology-viewport {
+  overflow: hidden;
+  padding-block: 6px;
+  margin-block: -6px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+}
+.marquee-running .technology-track { width: max-content; }
+.marquee-running .technology-list { flex-wrap: nowrap; padding-right: 40px; }
+.marquee-measuring .technology-track { width: max-content; }
+.marquee-measuring .technology-list { flex-wrap: nowrap; padding-right: 40px; }
+.technology-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  font: 12px var(--font-mono);
+  color: var(--dim);
+}
+.marquee-running .technology-list li, .marquee-measuring .technology-list li { white-space: nowrap; }
+.technology-list .bmark { width: 14px; height: 14px; }
+.technology-duplicate { display: none; }
+.marquee-running .technology-duplicate { display: flex; }
+
+/* Pointer depth (hover.ts) ------------------------------------------------
+   Cards tilt toward the pointer and lift; their icon and heading drift on a
+   nearer plane. The primary CTA leans toward the pointer. Rest state has no
+   transform, so cards are only composited while engaged. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .termcard { transition: transform 900ms var(--ease-out-expo); }
+  [data-tilt] {
+    transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(14px);
+  }
+  [data-reveal][data-tilt], .termcard[data-tilt] {
+    transition:
+      opacity 800ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      translate 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      scale 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      transform 200ms ease-out;
+  }
+  [data-tilt] .ic { transform: translate3d(calc(var(--px, 0) * 7px), calc(var(--py, 0) * 7px), 0); }
+  [data-tilt] :is(h3, h4, .tline) { transform: translate3d(calc(var(--px, 0) * 3px), calc(var(--py, 0) * 3px), 0); }
+  .go[data-magnet] { transform: translate3d(var(--mx, 0px), var(--my, 0px), 0); }
+  .go[data-magnet] .arr { transform: translate3d(var(--ax, 0px), var(--ay, 0px), 0); }
+}
+
+/* Scroll-linked depth ----------------------------------------------------
+   Progressive enhancement: the window atmosphere and motif drift at
+   different speeds, the hero copy recedes as it leaves, and the header
+   hairline fills with reading progress. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes m-atmo { from { translate: 0 -56px; } to { translate: 0 56px; } }
+    @keyframes m-motif { from { translate: 0 24px; } to { translate: 0 -24px; } }
+    @keyframes m-recede { to { opacity: .2; translate: 0 -72px; } }
+    @keyframes m-progress { from { scale: 0 1; } to { scale: 1 1; } }
+    .win .atmo { animation: m-atmo linear both; animation-timeline: view(); }
+    .win .sas { top: -32px; height: calc(100% + 64px); animation: m-motif linear both; animation-timeline: view(); }
+    .hero .copy { animation: m-recede linear both; animation-timeline: view(); animation-range: exit 10% exit 90%; }
+    nav.top::after {
+      content: '';
+      position: absolute;
+      inset: auto calc((min(100vw, 1440px) - 100vw) / 2) 0;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(187,198,209,.2), var(--steel));
+      transform-origin: 0 50%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 240ms var(--ease);
+      animation: m-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+    nav.top.is-scrolled::after { opacity: 1; }
+  }
+}
+
+/* Project media load / error state --------------------------------------- */
+.media { position: relative; }
+.media img, .media video { opacity: 0; transition: opacity var(--dur-reveal) var(--ease); }
+.media[data-media-state='ready'] img, .media[data-media-state='ready'] video { opacity: 1; }
+.media[data-media-state='error'] img, .media[data-media-state='error'] video { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .media img, .media video { scale: 1.06; transition: opacity 700ms var(--ease-out-expo), scale 1400ms var(--ease-out-expo); }
+  .media[data-media-state='ready'] :is(img, video) { scale: 1; }
+}
+[data-media-error] {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  font: 12px var(--font-mono);
+  color: var(--mute);
+  background: var(--solid);
+}
+.media[data-media-state='error'] [data-media-error] { display: flex; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; translate: none; scale: none; clip-path: none; transition: none; }
+  [data-pipeline-line] { transition: none; }
+  .pipeline-emphasis { transition: none; }
+  .technology-viewport { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .technology-track { width: 100%; }
+  .technology-list { flex-wrap: wrap; padding-right: 0; }
+  .technology-duplicate, .marquee-toggle { display: none !important; }
+}

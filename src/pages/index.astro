@@ -1,126 +1,68 @@
 ---
 // src/pages/index.astro
+// Build-time contract: the CMS endpoint must answer with valid, schema-conform
+// content or this build fails. No local/stale fallback exists.
 import '../styles/global.css';
+import '../styles/navigation.css';
+import '../styles/motion.css';
+import { fetchCmsContent } from '../lib/cms';
+import { buildSprite } from '../lib/sprite';
+import { embeddableJson } from '../lib/embed';
+import { chrome, chromeIcons } from '../lib/chrome';
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
-import Stats from '../components/Stats.astro';
 import Experience from '../components/Experience.astro';
 import AppliedAI from '../components/AppliedAI.astro';
-import Stack from '../components/Stack.astro';
+import Toolbox from '../components/Toolbox.astro';
 import Projects from '../components/Projects.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 
-import en from '../i18n/en.json';
-import id from '../i18n/id.json';
+const cms = await fetchCmsContent();
+const { content } = cms;
+const en = content.translations.en;
 
-const translations = { en, id };
-const translationsJson = JSON.stringify(translations);
+const techNames = [
+  ...new Set([
+    ...content.projects.flatMap((p) => p.tech),
+    ...content.stack.flatMap((s) => [...s.primary, ...s.items]),
+  ]),
+];
+const { sprite, techIds } = buildSprite([...chromeIcons], techNames);
+
+const dicts = {
+  en: { ...chrome.en, ...content.translations.en },
+  id: { ...chrome.id, ...content.translations.id },
+};
+const dictsJson = embeddableJson(dicts);
 ---
-
-<Layout>
-  <Nav />
-  <main>
-    <Hero />
-    <Stats />
-    <Experience />
-    <AppliedAI />
-    <Stack />
-    <Projects />
-    <Contact />
+<Layout settings={content.settings} sprite={sprite}>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <!-- Sasirangan motif (Banjar, Kalimantan Selatan): Gigi Haruan zigzag + Ombak waves + dots. -->
+      <pattern id="sasP" width="64" height="56" patternUnits="userSpaceOnUse">
+        <path d="M0 10 L8 2 L16 10 L24 2 L32 10 L40 2 L48 10 L56 2 L64 10" fill="none" stroke="#bbc6d1" stroke-width="1.2" />
+        <path d="M0 16 L8 8 L16 16 L24 8 L32 16 L40 8 L48 16 L56 8 L64 16" fill="none" stroke="#bbc6d1" stroke-width=".7" opacity=".6" />
+        <path d="M0 34 C8 26 16 26 24 34 S40 42 48 34 S64 26 64 34" fill="none" stroke="#bbc6d1" stroke-width="1" />
+        <path d="M0 41 C8 33 16 33 24 41 S40 49 48 41 S64 33 64 41" fill="none" stroke="#bbc6d1" stroke-width=".6" opacity=".55" />
+        <circle cx="32" cy="50" r="1.6" fill="#bbc6d1" />
+        <circle cx="0" cy="50" r="1.6" fill="#bbc6d1" />
+        <circle cx="64" cy="50" r="1.6" fill="#bbc6d1" />
+      </pattern>
+    </defs>
+  </svg>
+  <a class="skip-link" href="#main-content" data-i18n="ext.nav.skip">{chrome.en['ext.nav.skip']}</a>
+  <Nav content={content} />
+  <main id="main-content" tabindex="-1">
+    <Hero content={content} />
+    <Experience content={content} />
+    <AppliedAI content={content} />
+    <Toolbox content={content} techIds={techIds} />
+    <Projects content={content} techIds={techIds} />
+    <Contact content={content} />
   </main>
-  <Footer />
-
-  <script define:vars={{ translationsJson }}>
-    const translations = JSON.parse(translationsJson);
-
-    function applyLang(lang) {
-      const t = translations[lang] ?? translations['en'];
-      document.documentElement.setAttribute('lang', lang);
-      document.querySelectorAll('[data-i18n]').forEach((el) => {
-        const key = el.dataset.i18n;
-        if (t[key] !== undefined) el.innerHTML = t[key];
-      });
-      window.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
-    }
-
-    function updateToggleUI(lang) {
-      document.querySelectorAll('[data-lang-option]').forEach((opt) => {
-        const isActive = opt.dataset.langOption === lang;
-        opt.style.opacity = isActive ? '1' : '0.4';
-        opt.style.fontWeight = isActive ? '600' : '400';
-      });
-    }
-
-    const stored = localStorage.getItem('lang') ?? 'en';
-    applyLang(stored);
-    updateToggleUI(stored);
-
-    document.querySelectorAll('[data-lang-toggle]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const current = localStorage.getItem('lang') ?? 'en';
-        const next = current === 'en' ? 'id' : 'en';
-        localStorage.setItem('lang', next);
-        applyLang(next);
-        updateToggleUI(next);
-      });
-    });
-  </script>
-
-  <script>
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '-4% 0px' }
-    );
-
-    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
-
-    // sec-head reveal observer
-    const headObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('in-view');
-            headObserver.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.25, rootMargin: '0px 0px -10% 0px' }
-    );
-    document.querySelectorAll('.sec-head').forEach((el) => headObserver.observe(el));
-  </script>
-
-  <script>
-    const sections = ['work', 'ai', 'stack', 'projects', 'contact'];
-    const navLinks = Object.fromEntries(
-      sections.map((id) => [id, document.querySelector(`nav a[href="#${id}"]`)])
-    );
-
-    const navObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const link = navLinks[entry.target.id];
-          if (!link) return;
-          if (entry.isIntersecting) {
-            sections.forEach((id) => navLinks[id]?.removeAttribute('data-nav-active'));
-            link.setAttribute('data-nav-active', '');
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) navObserver.observe(el);
-    });
-  </script>
+  <Footer content={content} />
+  <script type="application/json" id="i18n-dicts" set:html={dictsJson} />
+  <script src="../scripts/site.ts"></script>
 </Layout>

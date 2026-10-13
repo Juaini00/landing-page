@@ -1,9 +1,20 @@
 ---
-// src/components/Footer.astro
+import type { CmsContent } from '../lib/cms';
+import { chrome } from '../lib/chrome';
+import Ico from './Ico.astro';
+interface Props { content: CmsContent; }
+const { content } = Astro.props;
+const en = content.translations.en;
 ---
-<footer class="border-t border-border py-8 font-mono text-[12px] text-ink-mute">
-  <div class="wrap flex justify-between items-center">
-    <div data-i18n="footer.copy">© 2026 Juaini · Hulu Sungai Tengah, ID</div>
-    <div data-i18n="footer.tagline">Built with Spring Boot energy ☕</div>
+<footer class="site">
+  <a class="wordmark" href="#top">{content.settings.name}<b>.</b></a>
+  <nav class="nav-capsule" aria-label="Footer">
+    <a href="#top" aria-current="location"><span data-i18n="ext.nav.home">{chrome.en['ext.nav.home']}</span></a>
+    {['work', 'ai', 'stack', 'projects', 'contact'].map(section => <a href={`#${section}`}><span data-i18n={`nav.${section}`} set:html={en[`nav.${section}`]} /></a>)}
+  </nav>
+  <div class="right">
+    <span data-i18n="footer.copy" set:html={en['footer.copy']} />
+    <span class="tagline" data-i18n="footer.tagline" set:html={en['footer.tagline']} />
+    <a class="top-link" href="#top"><span data-i18n="ext.footer.top">{chrome.en['ext.footer.top']}</span><Ico name="arrow-up-right" /></a>
   </div>
 </footer>
