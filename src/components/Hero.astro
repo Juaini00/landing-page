@@ -23,6 +23,8 @@ const stats = [
   <div class="copy">
     <div class="eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow" set:html={en['hero.eyebrow']} /></div>
     <h1 class="chrome display">
+      <!-- Name + role lead the h1 for search/answer engines; the visual headline is unchanged. -->
+      <span class="sr-only">{settings.name} — <span data-i18n="hero.eyebrow" set:html={en['hero.eyebrow']} />. </span>
       <span data-i18n="hero.h1.line1" set:html={en['hero.h1.line1']} /><br />
       <span data-i18n="hero.h1.line2" set:html={en['hero.h1.line2']} /> <span data-i18n="hero.h1.em1" set:html={en['hero.h1.em1']} />
     </h1>

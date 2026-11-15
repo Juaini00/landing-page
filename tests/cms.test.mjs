@@ -125,6 +125,7 @@ test('URLs reject malformed addresses, unsafe protocols, and credentials', async
     (p) => { p.content.settings.siteUrl = 'https://'; },
     (p) => { p.content.settings.linkedinUrl = 'javascript:alert(1)'; },
     (p) => { p.content.settings.githubUrl = 'https://user:pass@example.com'; },
+    (p) => { p.content.settings.youtubeUrl = 'javascript:alert(1)'; },
     (p) => { p.content.projects[0].links[0].href = 'http://'; },
     (p) => { p.content.projects[0].links[0].href = 'https://user@example.com'; },
     (p) => { p.content.projects[0].media = [{ url: 'http://cdn.test/image.png', kind: 'image' }]; },
@@ -163,3 +164,12 @@ test('present optional fields cannot be null', async () => {
   }
 });
 
+
+test('optional creator links are kept when set and dropped when empty', async () => {
+  const p = validPayload();
+  p.content.settings.youtubeUrl = 'https://www.youtube.com/@tekngobrol';
+  p.content.settings.facebookUrl = '';
+  const { content } = await fetchPayload(p);
+  assert.equal(content.settings.youtubeUrl, 'https://www.youtube.com/@tekngobrol');
+  assert.ok(!('facebookUrl' in content.settings));
+});

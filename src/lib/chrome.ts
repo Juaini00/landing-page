@@ -35,6 +35,9 @@ export const chrome: Record<'en' | 'id', Record<string, string>> = {
     'ext.contact.email': 'Email',
     'ext.contact.linkedin': 'LinkedIn',
     'ext.contact.whatsapp': 'WhatsApp',
+    'ext.contact.youtube': 'YouTube',
+    'ext.contact.instagram': 'Instagram',
+    'ext.contact.facebook': 'Facebook',
     'ext.footer.top': 'Back to top',
   },
   id: {
@@ -72,6 +75,9 @@ export const chrome: Record<'en' | 'id', Record<string, string>> = {
     'ext.contact.email': 'Email',
     'ext.contact.linkedin': 'LinkedIn',
     'ext.contact.whatsapp': 'WhatsApp',
+    'ext.contact.youtube': 'YouTube',
+    'ext.contact.instagram': 'Instagram',
+    'ext.contact.facebook': 'Facebook',
     'ext.footer.top': 'Kembali ke atas',
   },
 };
@@ -80,6 +86,7 @@ export const chromeIcons = [
   'menu', 'arrow-up-right', 'briefcase', 'brain', 'database', 'message', 'search',
   'route', 'shield-check', 'file-text', 'shield', 'circle-check', 'eye',
   'lock', 'calendar', 'truck', 'link', 'mail', 'brand-linkedin', 'brand-whatsapp', 'map-pin',
+  'brand-youtube', 'brand-instagram', 'brand-facebook',
 ] as const;
 export const aiPrincipleIcons: Record<string, string> = {
   grounded: 'shield-check', constrained: 'circle-check', deterministic: 'database', observable: 'eye',
