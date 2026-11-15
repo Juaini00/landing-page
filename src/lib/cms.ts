@@ -48,6 +48,9 @@ export type CmsSettings = {
   email: string;
   linkedinUrl: string;
   githubUrl: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
+  facebookUrl?: string;
   phone: string;
   phoneLabel: string;
   avatarUrl: string;
@@ -68,7 +71,7 @@ export type CmsPayload = {
   publishedAt: string;
 };
 
-const DEFAULT_URL = 'http://localhost:3000/api/content';
+const DEFAULT_URL = 'https://landing-page-dashboard-five.vercel.app/api/content';
 
 const TEMPLATE_TRANSLATION_KEYS = [
   'nav.work', 'nav.ai', 'nav.stack', 'nav.projects', 'nav.contact',
@@ -255,6 +258,11 @@ function validateSettings(raw: unknown): CmsSettings {
     avatarLabel: str(s.avatarLabel, 'settings.avatarLabel'),
     heroChips: strArray(s.heroChips, 'settings.heroChips'),
   };
+  // Optional creator links: absent or empty means "not shown".
+  for (const key of ['youtubeUrl', 'instagramUrl', 'facebookUrl'] as const) {
+    if (s[key] === undefined || s[key] === '') continue;
+    settings[key] = url(str(s[key], `settings.${key}`), `settings.${key}`);
+  }
   url(settings.siteUrl, 'settings.siteUrl');
   url(settings.linkedinUrl, 'settings.linkedinUrl');
   url(settings.githubUrl, 'settings.githubUrl');
@@ -287,6 +295,13 @@ function validate(raw: unknown): CmsPayload {
       new Date(`${raw.publishedAt.slice(0, 10)}T00:00:00Z`).toISOString().slice(0, 10) !== raw.publishedAt.slice(0, 10))
     fail('publishedAt must be an ISO datetime string');
   return { content: { translations, projects, stack, settings }, revision: raw.revision, publishedAt: raw.publishedAt };
+}
+
+// One fetch per build: the page and the SEO endpoints share the same payload.
+let cached: Promise<CmsPayload> | undefined;
+
+export function getCmsContent(): Promise<CmsPayload> {
+  return (cached ??= fetchCmsContent());
 }
 
 export async function fetchCmsContent(): Promise<CmsPayload> {

@@ -1,8 +1,9 @@
 ---
 // Contact window: hero-mirror layout — chrome headline + CTA, profile notch,
-// channels dock (email / LinkedIn / WhatsApp) and location dock.
+// channels dock (email / LinkedIn / WhatsApp / creator channels) and location dock.
 import type { CmsContent } from '../lib/cms';
 import { chrome } from '../lib/chrome';
+import { creatorLinks } from '../lib/seo';
 import Ico from './Ico.astro';
 import Window from './Window.astro';
 
@@ -18,6 +19,7 @@ const channels = [
   { icon: 'mail', labelKey: 'ext.contact.email', href: `mailto:${s.email}`, value: s.email },
   { icon: 'brand-linkedin', labelKey: 'ext.contact.linkedin', href: s.linkedinUrl, value: `@${linkedinHandle}` },
   { icon: 'brand-whatsapp', labelKey: 'ext.contact.whatsapp', href: `https://wa.me/${s.phone.replace(/[^0-9]/g, '')}`, value: s.phoneLabel },
+  ...creatorLinks(s).map((c) => ({ icon: `brand-${c.key}`, labelKey: `ext.contact.${c.key}`, href: c.url, value: c.handle })),
 ];
 ---
 <Window id="contact" tabKey="ext.contact.tab" tabEn={chrome.en['ext.contact.tab']} variant="contact" bp="70% 30%">
@@ -49,7 +51,7 @@ const channels = [
     <span class="fillet f-tr fa"></span><span class="fillet f-tr fb"></span>
     {
       channels.map((c) => (
-        <a class="channel" href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener">
+        <a class="channel" href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel={c.href.startsWith('http') ? 'me noopener' : undefined}>
           <div class="ic"><Ico name={c.icon} /></div>
           <div>
             <span class="lbl" data-i18n={c.labelKey}>{chrome.en[c.labelKey]}</span>

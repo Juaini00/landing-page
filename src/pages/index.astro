@@ -5,7 +5,7 @@
 import '../styles/global.css';
 import '../styles/navigation.css';
 import '../styles/motion.css';
-import { fetchCmsContent } from '../lib/cms';
+import { getCmsContent } from '../lib/cms';
 import { buildSprite } from '../lib/sprite';
 import { embeddableJson } from '../lib/embed';
 import { chrome, chromeIcons } from '../lib/chrome';
@@ -19,7 +19,7 @@ import Projects from '../components/Projects.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 
-const cms = await fetchCmsContent();
+const cms = await getCmsContent();
 const { content } = cms;
 const en = content.translations.en;
 
@@ -37,7 +37,7 @@ const dicts = {
 };
 const dictsJson = embeddableJson(dicts);
 ---
-<Layout settings={content.settings} sprite={sprite}>
+<Layout cms={cms} sprite={sprite}>
   <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
     <defs>
       <!-- Sasirangan motif (Banjar, Kalimantan Selatan): Gigi Haruan zigzag + Ombak waves + dots. -->
